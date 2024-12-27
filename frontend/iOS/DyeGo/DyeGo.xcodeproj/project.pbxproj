@@ -1,0 +1,587 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DFF50A872D1E6A610008BF88 /* DyeGoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF50A862D1E6A610008BF88 /* DyeGoApp.swift */; };
+		DFF50A892D1E6A610008BF88 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF50A882D1E6A610008BF88 /* ContentView.swift */; };
+		DFF50A8B2D1E6A620008BF88 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DFF50A8A2D1E6A620008BF88 /* Assets.xcassets */; };
+		DFF50A8E2D1E6A620008BF88 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DFF50A8D2D1E6A620008BF88 /* Preview Assets.xcassets */; };
+		DFF50A982D1E6A620008BF88 /* DyeGoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF50A972D1E6A620008BF88 /* DyeGoTests.swift */; };
+		DFF50AA22D1E6A620008BF88 /* DyeGoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF50AA12D1E6A620008BF88 /* DyeGoUITests.swift */; };
+		DFF50AA42D1E6A620008BF88 /* DyeGoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF50AA32D1E6A620008BF88 /* DyeGoUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DFF50A942D1E6A620008BF88 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DFF50A7B2D1E6A610008BF88 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DFF50A822D1E6A610008BF88;
+			remoteInfo = DyeGo;
+		};
+		DFF50A9E2D1E6A620008BF88 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DFF50A7B2D1E6A610008BF88 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DFF50A822D1E6A610008BF88;
+			remoteInfo = DyeGo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		DFF50A832D1E6A610008BF88 /* DyeGo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DyeGo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DFF50A862D1E6A610008BF88 /* DyeGoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DyeGoApp.swift; sourceTree = "<group>"; };
+		DFF50A882D1E6A610008BF88 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		DFF50A8A2D1E6A620008BF88 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DFF50A8D2D1E6A620008BF88 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		DFF50A932D1E6A620008BF88 /* DyeGoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DyeGoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DFF50A972D1E6A620008BF88 /* DyeGoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DyeGoTests.swift; sourceTree = "<group>"; };
+		DFF50A9D2D1E6A620008BF88 /* DyeGoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DyeGoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DFF50AA12D1E6A620008BF88 /* DyeGoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DyeGoUITests.swift; sourceTree = "<group>"; };
+		DFF50AA32D1E6A620008BF88 /* DyeGoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DyeGoUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DFF50A802D1E6A610008BF88 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DFF50A902D1E6A620008BF88 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DFF50A9A2D1E6A620008BF88 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DFF50A7A2D1E6A610008BF88 = {
+			isa = PBXGroup;
+			children = (
+				DFF50A852D1E6A610008BF88 /* DyeGo */,
+				DFF50A962D1E6A620008BF88 /* DyeGoTests */,
+				DFF50AA02D1E6A620008BF88 /* DyeGoUITests */,
+				DFF50A842D1E6A610008BF88 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DFF50A842D1E6A610008BF88 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DFF50A832D1E6A610008BF88 /* DyeGo.app */,
+				DFF50A932D1E6A620008BF88 /* DyeGoTests.xctest */,
+				DFF50A9D2D1E6A620008BF88 /* DyeGoUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DFF50A852D1E6A610008BF88 /* DyeGo */ = {
+			isa = PBXGroup;
+			children = (
+				DFF50A862D1E6A610008BF88 /* DyeGoApp.swift */,
+				DFF50A882D1E6A610008BF88 /* ContentView.swift */,
+				DFF50A8A2D1E6A620008BF88 /* Assets.xcassets */,
+				DFF50A8C2D1E6A620008BF88 /* Preview Content */,
+			);
+			path = DyeGo;
+			sourceTree = "<group>";
+		};
+		DFF50A8C2D1E6A620008BF88 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				DFF50A8D2D1E6A620008BF88 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		DFF50A962D1E6A620008BF88 /* DyeGoTests */ = {
+			isa = PBXGroup;
+			children = (
+				DFF50A972D1E6A620008BF88 /* DyeGoTests.swift */,
+			);
+			path = DyeGoTests;
+			sourceTree = "<group>";
+		};
+		DFF50AA02D1E6A620008BF88 /* DyeGoUITests */ = {
+			isa = PBXGroup;
+			children = (
+				DFF50AA12D1E6A620008BF88 /* DyeGoUITests.swift */,
+				DFF50AA32D1E6A620008BF88 /* DyeGoUITestsLaunchTests.swift */,
+			);
+			path = DyeGoUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DFF50A822D1E6A610008BF88 /* DyeGo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DFF50AA72D1E6A620008BF88 /* Build configuration list for PBXNativeTarget "DyeGo" */;
+			buildPhases = (
+				DFF50A7F2D1E6A610008BF88 /* Sources */,
+				DFF50A802D1E6A610008BF88 /* Frameworks */,
+				DFF50A812D1E6A610008BF88 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DyeGo;
+			productName = DyeGo;
+			productReference = DFF50A832D1E6A610008BF88 /* DyeGo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DFF50A922D1E6A620008BF88 /* DyeGoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DFF50AAA2D1E6A620008BF88 /* Build configuration list for PBXNativeTarget "DyeGoTests" */;
+			buildPhases = (
+				DFF50A8F2D1E6A620008BF88 /* Sources */,
+				DFF50A902D1E6A620008BF88 /* Frameworks */,
+				DFF50A912D1E6A620008BF88 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DFF50A952D1E6A620008BF88 /* PBXTargetDependency */,
+			);
+			name = DyeGoTests;
+			productName = DyeGoTests;
+			productReference = DFF50A932D1E6A620008BF88 /* DyeGoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		DFF50A9C2D1E6A620008BF88 /* DyeGoUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DFF50AAD2D1E6A620008BF88 /* Build configuration list for PBXNativeTarget "DyeGoUITests" */;
+			buildPhases = (
+				DFF50A992D1E6A620008BF88 /* Sources */,
+				DFF50A9A2D1E6A620008BF88 /* Frameworks */,
+				DFF50A9B2D1E6A620008BF88 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DFF50A9F2D1E6A620008BF88 /* PBXTargetDependency */,
+			);
+			name = DyeGoUITests;
+			productName = DyeGoUITests;
+			productReference = DFF50A9D2D1E6A620008BF88 /* DyeGoUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DFF50A7B2D1E6A610008BF88 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1520;
+				LastUpgradeCheck = 1520;
+				TargetAttributes = {
+					DFF50A822D1E6A610008BF88 = {
+						CreatedOnToolsVersion = 15.2;
+					};
+					DFF50A922D1E6A620008BF88 = {
+						CreatedOnToolsVersion = 15.2;
+						TestTargetID = DFF50A822D1E6A610008BF88;
+					};
+					DFF50A9C2D1E6A620008BF88 = {
+						CreatedOnToolsVersion = 15.2;
+						TestTargetID = DFF50A822D1E6A610008BF88;
+					};
+				};
+			};
+			buildConfigurationList = DFF50A7E2D1E6A610008BF88 /* Build configuration list for PBXProject "DyeGo" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = DFF50A7A2D1E6A610008BF88;
+			productRefGroup = DFF50A842D1E6A610008BF88 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DFF50A822D1E6A610008BF88 /* DyeGo */,
+				DFF50A922D1E6A620008BF88 /* DyeGoTests */,
+				DFF50A9C2D1E6A620008BF88 /* DyeGoUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DFF50A812D1E6A610008BF88 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DFF50A8E2D1E6A620008BF88 /* Preview Assets.xcassets in Resources */,
+				DFF50A8B2D1E6A620008BF88 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DFF50A912D1E6A620008BF88 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DFF50A9B2D1E6A620008BF88 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DFF50A7F2D1E6A610008BF88 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DFF50A892D1E6A610008BF88 /* ContentView.swift in Sources */,
+				DFF50A872D1E6A610008BF88 /* DyeGoApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DFF50A8F2D1E6A620008BF88 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DFF50A982D1E6A620008BF88 /* DyeGoTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DFF50A992D1E6A620008BF88 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DFF50AA22D1E6A620008BF88 /* DyeGoUITests.swift in Sources */,
+				DFF50AA42D1E6A620008BF88 /* DyeGoUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DFF50A952D1E6A620008BF88 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DFF50A822D1E6A610008BF88 /* DyeGo */;
+			targetProxy = DFF50A942D1E6A620008BF88 /* PBXContainerItemProxy */;
+		};
+		DFF50A9F2D1E6A620008BF88 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DFF50A822D1E6A610008BF88 /* DyeGo */;
+			targetProxy = DFF50A9E2D1E6A620008BF88 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		DFF50AA52D1E6A620008BF88 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		DFF50AA62D1E6A620008BF88 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		DFF50AA82D1E6A620008BF88 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"DyeGo/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pingyujc.DyeGo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		DFF50AA92D1E6A620008BF88 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"DyeGo/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pingyujc.DyeGo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		DFF50AAB2D1E6A620008BF88 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pingyujc.DyeGoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DyeGo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DyeGo";
+			};
+			name = Debug;
+		};
+		DFF50AAC2D1E6A620008BF88 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pingyujc.DyeGoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DyeGo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DyeGo";
+			};
+			name = Release;
+		};
+		DFF50AAE2D1E6A620008BF88 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pingyujc.DyeGoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = DyeGo;
+			};
+			name = Debug;
+		};
+		DFF50AAF2D1E6A620008BF88 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pingyujc.DyeGoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = DyeGo;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DFF50A7E2D1E6A610008BF88 /* Build configuration list for PBXProject "DyeGo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DFF50AA52D1E6A620008BF88 /* Debug */,
+				DFF50AA62D1E6A620008BF88 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DFF50AA72D1E6A620008BF88 /* Build configuration list for PBXNativeTarget "DyeGo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DFF50AA82D1E6A620008BF88 /* Debug */,
+				DFF50AA92D1E6A620008BF88 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DFF50AAA2D1E6A620008BF88 /* Build configuration list for PBXNativeTarget "DyeGoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DFF50AAB2D1E6A620008BF88 /* Debug */,
+				DFF50AAC2D1E6A620008BF88 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DFF50AAD2D1E6A620008BF88 /* Build configuration list for PBXNativeTarget "DyeGoUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DFF50AAE2D1E6A620008BF88 /* Debug */,
+				DFF50AAF2D1E6A620008BF88 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DFF50A7B2D1E6A610008BF88 /* Project object */;
+}

@@ -1,0 +1,14 @@
+# macOS files
+.DS_Store
+*.xcuserdata
+*.lock
+
+# Go files
+bin/
+*.exe
+*.log
+
+# Xcode files
+DerivedData/
+build/
+*.xcuserstate
