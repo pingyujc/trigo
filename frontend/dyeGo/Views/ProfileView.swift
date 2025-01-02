@@ -1,3 +1,5 @@
+import SwiftUI
+
 struct ProfileView: View {
     @StateObject private var viewModel = ProfileViewModel()
     
@@ -67,5 +69,12 @@ struct ProfileView: View {
                 LoginPromptView(destination: .profile)
             }
         }
+    }
+}
+
+// Add preview provider
+struct ProfileView_Previews: PreviewProvider {
+    static var previews: some View {
+        ProfileView()
     }
 } 

@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 class ProfileViewModel: ObservableObject {
     @Published var isLoggedIn: Bool = false
@@ -6,7 +7,7 @@ class ProfileViewModel: ObservableObject {
     @Published var activeOrders: [Order] = []
     
     init() {
-        // Temporary initialization with mock data
+        // Initialize with mock data
         self.user = User(
             id: "1",
             name: "Test User",
@@ -14,7 +15,6 @@ class ProfileViewModel: ObservableObject {
             isSeller: false
         )
         
-        // TODO: Replace with actual authentication check
         checkAuthStatus()
     }
     

@@ -4,16 +4,10 @@ struct ProfileHeader: View {
     let user: User
     
     var body: some View {
-        VStack(spacing: 12) {
-            Image(systemName: "person.circle.fill")
-                .font(.system(size: 64))
-                .foregroundColor(.blue)
-            
+        VStack(alignment: .leading) {
             Text(user.name)
-                .font(.title2)
-            
+                .font(.title)
             Text(user.email)
-                .font(.subheadline)
                 .foregroundColor(.gray)
         }
         .padding()

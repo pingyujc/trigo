@@ -1,3 +1,5 @@
+import Foundation
+
 // Models for the marketplace
 struct Item: Identifiable {
     let id: String
