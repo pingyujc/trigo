@@ -25,9 +25,10 @@ struct ContentView: View {
                 .tabItem {
                     Label("Favorite", systemImage: "heart")
                 }
-            AccountView()
+            
+            ProfileView()
                 .tabItem {
-                    Label("Account", systemImage: "person")
+                    Label("Profile", systemImage: "person")
                 }
         }
     }
