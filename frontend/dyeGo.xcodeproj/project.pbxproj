@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DF05A2BF2D262B290066B578 /* dysGoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF05A2BE2D262B290066B578 /* dysGoApp.swift */; };
 		DFF234222D2624C300007B50 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF234122D2624C300007B50 /* ProfileViewModel.swift */; };
 		DFF234232D2624C300007B50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DFF234142D2624C300007B50 /* Assets.xcassets */; };
 		DFF234242D2624C300007B50 /* MarketplaceModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF234162D2624C300007B50 /* MarketplaceModels.swift */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DF05A2BE2D262B290066B578 /* dysGoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dysGoApp.swift; sourceTree = "<group>"; };
 		DF277B182D1E7863000CD9F7 /* dyeGo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dyeGo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFF234122D2624C300007B50 /* ProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		DFF234142D2624C300007B50 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				DFF234142D2624C300007B50 /* Assets.xcassets */,
+				DF05A2BE2D262B290066B578 /* dysGoApp.swift */,
 			);
 			path = Others;
 			sourceTree = "<group>";
@@ -205,6 +208,7 @@
 				DFF234282D2624C300007B50 /* LoginView.swift in Sources */,
 				DFF234262D2624C300007B50 /* FavoriteView.swift in Sources */,
 				DFF234222D2624C300007B50 /* ProfileViewModel.swift in Sources */,
+				DF05A2BF2D262B290066B578 /* dysGoApp.swift in Sources */,
 				DFF2342D2D2624C300007B50 /* SignUpView.swift in Sources */,
 				DFF234272D2624C300007B50 /* ProfileView.swift in Sources */,
 				DFF234252D2624C300007B50 /* SearchView.swift in Sources */,
