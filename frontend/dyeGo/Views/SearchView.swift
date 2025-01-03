@@ -9,10 +9,11 @@ struct SearchView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
+            VStack(spacing: 0) {
                 // Search Bar
                 SearchBar(text: $searchText)
                     .padding()
+                    .background(Color(.systemBackground))
                 
                 // Filters
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -46,7 +47,9 @@ struct SearchView: View {
                 
                 // Search Results
                 if searchResults.isEmpty {
+                    Spacer()
                     EmptyStateView()
+                    Spacer()
                 } else {
                     ScrollView {
                         LazyVStack(spacing: 16) {
@@ -60,9 +63,9 @@ struct SearchView: View {
             }
             .navigationTitle("Search")
         }
-        .onChange(of: searchText) { _ in
-            performSearch()
-        }
+//        .onChange(of: searchText) { _ in
+//            performSearch()
+//        }
     }
     
     private func toggleFilter(_ filter: Filter) {
@@ -173,3 +176,4 @@ struct SearchResultRow: View {
         .padding(.vertical, 8)
     }
 }
+
