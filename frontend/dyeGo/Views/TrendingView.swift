@@ -9,19 +9,33 @@ import SwiftUI
 
 struct TrendingView: View {
     @State private var selectedCategory: Category? // Assuming you define this elsewhere
+    @State private var selectedCountry: Country?
 
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 20) {
                     // Trending Categories
+//                    ScrollView(.horizontal, showsIndicators: false) {
+//                        HStack(spacing: 12) {
+//                            ForEach(Category.allCases, id: \.self) { category in
+//                                CategoryButton(
+//                                    category: category,
+//                                    isSelected: selectedCategory == category,
+//                                    action: { selectedCategory = category }
+//                                )
+//                            }
+//                        }
+//                        .padding(.horizontal)
+//                    }
+//                    Country filter
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 12) {
-                            ForEach(Category.allCases, id: \.self) { category in
-                                CategoryButton(
-                                    category: category,
-                                    isSelected: selectedCategory == category,
-                                    action: { selectedCategory = category }
+                            ForEach(Country.allCases, id: \.self) { country in
+                                CountryButton(
+                                    country: country,
+                                    isSelected: selectedCountry == country,
+                                    action: { selectedCountry = country }
                                 )
                             }
                         }

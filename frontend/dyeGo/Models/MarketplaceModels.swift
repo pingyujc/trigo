@@ -9,6 +9,7 @@ struct Item: Identifiable {
     let imageURL: URL
     let seller: User
     let category: Category
+    let country: Country
     var isAvailable: Bool
     // Add more properties as needed
 }
@@ -33,6 +34,22 @@ enum Category: CaseIterable {
         case .electronics: return "Electronics"
         case .home: return "Home"
         case .sports: return "Sports"
+        }
+    }
+}
+
+enum Country: CaseIterable {
+    case taiwan, japan, korea, unitedStates, france
+    // Add more categories
+    
+    var name: String {
+        // Implement display names
+        switch self {
+        case .taiwan: return "Taiwan"
+        case .japan: return "Japan"
+        case .korea: return "Korea"
+        case .unitedStates: return "United States"
+        case .france: return "France"
         }
     }
 }
