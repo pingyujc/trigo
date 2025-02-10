@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		DF05A2BF2D262B290066B578 /* dysGoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF05A2BE2D262B290066B578 /* dysGoApp.swift */; };
+		DF2169462D597296002E5BFE /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2169452D597296002E5BFE /* Product.swift */; };
+		DF2169482D59761D002E5BFE /* ProductDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2169472D59761D002E5BFE /* ProductDetailView.swift */; };
+		DF21694A2D597A80002E5BFE /* ProductCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2169492D597A80002E5BFE /* ProductCard.swift */; };
+		DF21694C2D597B0F002E5BFE /* SectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF21694B2D597B0F002E5BFE /* SectionView.swift */; };
+		DF21694E2D597E96002E5BFE /* CategoryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF21694D2D597E96002E5BFE /* CategoryButton.swift */; };
 		DFF234222D2624C300007B50 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF234122D2624C300007B50 /* ProfileViewModel.swift */; };
 		DFF234232D2624C300007B50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DFF234142D2624C300007B50 /* Assets.xcassets */; };
 		DFF234242D2624C300007B50 /* MarketplaceModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF234162D2624C300007B50 /* MarketplaceModels.swift */; };
@@ -26,6 +31,11 @@
 
 /* Begin PBXFileReference section */
 		DF05A2BE2D262B290066B578 /* dysGoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dysGoApp.swift; sourceTree = "<group>"; };
+		DF2169452D597296002E5BFE /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		DF2169472D59761D002E5BFE /* ProductDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailView.swift; sourceTree = "<group>"; };
+		DF2169492D597A80002E5BFE /* ProductCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCard.swift; sourceTree = "<group>"; };
+		DF21694B2D597B0F002E5BFE /* SectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionView.swift; sourceTree = "<group>"; };
+		DF21694D2D597E96002E5BFE /* CategoryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryButton.swift; sourceTree = "<group>"; };
 		DF277B182D1E7863000CD9F7 /* dyeGo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dyeGo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFF234122D2624C300007B50 /* ProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		DFF234142D2624C300007B50 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -103,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				DFF234162D2624C300007B50 /* MarketplaceModels.swift */,
+				DF2169452D597296002E5BFE /* Product.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -110,6 +121,9 @@
 		DFF234172D2624C300007B50 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				DF21694D2D597E96002E5BFE /* CategoryButton.swift */,
+				DF21694B2D597B0F002E5BFE /* SectionView.swift */,
+				DF2169492D597A80002E5BFE /* ProductCard.swift */,
 				DFF234182D2624C300007B50 /* SearchView.swift */,
 				DFF234192D2624C300007B50 /* FavoriteView.swift */,
 				DFF2341A2D2624C300007B50 /* ProfileView.swift */,
@@ -120,6 +134,7 @@
 				DFF2341F2D2624C300007B50 /* ProfileSupportingViews.swift */,
 				DFF234202D2624C300007B50 /* SignUpView.swift */,
 				DFF234212D2624C300007B50 /* ContentView.swift */,
+				DF2169472D59761D002E5BFE /* ProductDetailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -209,12 +224,17 @@
 				DFF234262D2624C300007B50 /* FavoriteView.swift in Sources */,
 				DFF234222D2624C300007B50 /* ProfileViewModel.swift in Sources */,
 				DF05A2BF2D262B290066B578 /* dysGoApp.swift in Sources */,
+				DF21694A2D597A80002E5BFE /* ProductCard.swift in Sources */,
 				DFF2342D2D2624C300007B50 /* SignUpView.swift in Sources */,
+				DF21694E2D597E96002E5BFE /* CategoryButton.swift in Sources */,
 				DFF234272D2624C300007B50 /* ProfileView.swift in Sources */,
 				DFF234252D2624C300007B50 /* SearchView.swift in Sources */,
+				DF21694C2D597B0F002E5BFE /* SectionView.swift in Sources */,
 				DFF2342B2D2624C300007B50 /* AccountView.swift in Sources */,
+				DF2169482D59761D002E5BFE /* ProductDetailView.swift in Sources */,
 				DFF2342A2D2624C300007B50 /* LoginPromptView.swift in Sources */,
 				DFF234242D2624C300007B50 /* MarketplaceModels.swift in Sources */,
+				DF2169462D597296002E5BFE /* Product.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
