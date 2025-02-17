@@ -23,35 +23,23 @@ struct User: Identifiable {
     // Add more properties as needed
 }
 
-enum Category: CaseIterable {
-    case clothing, electronics, home, sports
-    // Add more categories
+enum Category: String, Codable, CaseIterable {
+    case clothing = "Clothing"
+    case electronics = "Electronics"
+    case home = "Home"
+    case sports = "Sports"
     
-    var name: String {
-        // Implement display names
-        switch self {
-        case .clothing: return "Clothing"
-        case .electronics: return "Electronics"
-        case .home: return "Home"
-        case .sports: return "Sports"
-        }
-    }
+    var name: String { return self.rawValue }
 }
 
-enum Country: CaseIterable {
-    case taiwan, japan, korea, unitedStates, france
-    // Add more categories
+enum Country: String, Codable, CaseIterable {
+    case taiwan = "Taiwan"
+    case japan = "Japan"
+    case korea = "Korea"
+    case unitedStates = "United States"
+    case france = "France"
     
-    var name: String {
-        // Implement display names
-        switch self {
-        case .taiwan: return "Taiwan"
-        case .japan: return "Japan"
-        case .korea: return "Korea"
-        case .unitedStates: return "United States"
-        case .france: return "France"
-        }
-    }
+    var name: String { return self.rawValue }
 }
 
 enum SortOption: CaseIterable {

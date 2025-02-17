@@ -21,6 +21,11 @@ struct ContentView: View {
                     Label("Search", systemImage: "magnifyingglass")
                 }
             
+            CreateOptionsView()
+                .tabItem {
+                    Label("Create", systemImage: "plus.circle.fill")
+                }
+            
             FavoriteView()
                 .tabItem {
                     Label("Favorite", systemImage: "heart")
