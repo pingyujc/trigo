@@ -1,39 +1,35 @@
 import SwiftUI
 
-struct CreateRequestView: View {
+struct CreateListingView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var productViewModel: ProductViewModel
     
     // Form fields
     @State private var title = ""
-    @State private var maxPrice = ""
+    @State private var price = ""
     @State private var description = ""
     @State private var selectedCategory: Category = .clothing
     @State private var selectedCountry: Country = .unitedStates
-    @State private var image = "" // Optional for requests
+    @State private var image = "" // You might want to replace this with proper image handling
     
     var body: some View {
         NavigationView {
             Form {
                 // Title
-                Section(header: Text("What are you looking for?")) {
+                Section(header: Text("Title")) {
                     TextField("Enter title", text: $title)
                 }
                 
                 // Price
-                Section(header: Text("Maximum Price")) {
-                    TextField("Enter maximum price", text: $maxPrice)
+                Section(header: Text("Price")) {
+                    TextField("Enter price", text: $price)
                         .keyboardType(.decimalPad)
                 }
                 
                 // Description
-                Section(header: Text("Details")) {
+                Section(header: Text("Description")) {
                     TextEditor(text: $description)
                         .frame(height: 100)
-                        .placeholder(when: description.isEmpty) {
-                            Text("Describe what you're looking for (condition, size, color, etc.)")
-                                .foregroundColor(.gray)
-                        }
                 }
                 
                 // Category
@@ -56,7 +52,7 @@ struct CreateRequestView: View {
                     }
                 }
             }
-            .navigationTitle("Create Request")
+            .navigationTitle("Create Listing")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
@@ -66,7 +62,7 @@ struct CreateRequestView: View {
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Post") {
-                        createRequest()
+                        createListing()
                     }
                     .disabled(!isValid)
                 }
@@ -76,15 +72,15 @@ struct CreateRequestView: View {
     
     private var isValid: Bool {
         !title.isEmpty && 
-        !maxPrice.isEmpty && 
+        !price.isEmpty && 
         !description.isEmpty &&
-        (Double(maxPrice) ?? 0) > 0
+        (Double(price) ?? 0) > 0
     }
     
-    private func createRequest() {
-        guard let priceValue = Double(maxPrice) else { return }
+    private func createListing() {
+        guard let priceValue = Double(price) else { return }
         
-        productViewModel.createRequest(
+        productViewModel.createListing(
             title: title,
             price: priceValue,
             description: description,
@@ -97,21 +93,7 @@ struct CreateRequestView: View {
     }
 }
 
-// Helper view modifier for placeholder text in TextEditor
-extension View {
-    func placeholder<Content: View>(
-        when shouldShow: Bool,
-        alignment: Alignment = .leading,
-        @ViewBuilder placeholder: () -> Content) -> some View {
-        
-        ZStack(alignment: alignment) {
-            placeholder().opacity(shouldShow ? 1 : 0)
-            self
-        }
-    }
-}
-
 #Preview {
-    CreateRequestView()
+    CreateListingView()
         .environmentObject(ProductViewModel())
-} 
+}

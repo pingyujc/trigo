@@ -10,6 +10,7 @@ import SwiftUI
 struct TrendingView: View {
     @State private var selectedCategory: Category? // Assuming you define this elsewhere
     @State private var selectedCountry: Country?
+    @EnvironmentObject var productViewModel: ProductViewModel  // Use shared instance
 
     var body: some View {
         NavigationView {
@@ -44,12 +45,13 @@ struct TrendingView: View {
 
                     // Trending Product Sections
                     LazyVStack(spacing: 20) {
-                        SectionView(title: "Recently Viewed", products: mockRecentlyViewed)
-                        SectionView(title: "Currently Trending", products: mockTrendingProducts)
-                        SectionView(title: "Buy Again", products: mockBuyAgain)
+//                        SectionView(title: "Recently Viewed", products: mockRecentlyViewed)
+                        SectionView(title: "Trending Listings", products: productViewModel.getListings())
+                        SectionView(title: "Trending Requests", products: productViewModel.getRequests())
                     }
                     .padding()
                 }
+
             }
             .navigationTitle("Trending")
         }
@@ -59,7 +61,7 @@ struct TrendingView: View {
 
 
 
-// Sample Data for Preview
+// Sample Data for Preview, currently not used
 let mockRecentlyViewed = [
     Product(title: "Porche 911", price: 399.99, description: "Cool car.", image: "porche911"),
     Product(title: "G Wagon", price: 500, description: "Huge car.", image: "benzG500"),

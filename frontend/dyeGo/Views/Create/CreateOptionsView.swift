@@ -1,6 +1,10 @@
 import SwiftUI
 
 struct CreateOptionsView: View {
+    @State private var showingListingSheet = false
+    @State private var showingRequestSheet = false
+    @EnvironmentObject var productViewModel: ProductViewModel
+    
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
@@ -8,12 +12,12 @@ struct CreateOptionsView: View {
                     .font(.headline)
                     .padding(.top, 30)
                 
-                NavigationLink(destination: CreateProductView()) {
+                NavigationLink(destination: CreateListingView()) {
                     HStack {
                         Image(systemName: "tag.fill")
                             .font(.title2)
                         VStack(alignment: .leading) {
-                            Text("List a Product")
+                            Text("Make a Listing")
                                 .font(.headline)
                             Text("Sell an item to potential buyers")
                                 .font(.caption)
@@ -54,6 +58,14 @@ struct CreateOptionsView: View {
             }
             .padding()
             .navigationTitle("Create")
+            .sheet(isPresented: $showingListingSheet) {
+                CreateListingView()
+                    .environmentObject(productViewModel)
+            }
+            .sheet(isPresented: $showingRequestSheet) {
+                CreateRequestView()
+                    .environmentObject(productViewModel)
+            }
         }
     }
 }

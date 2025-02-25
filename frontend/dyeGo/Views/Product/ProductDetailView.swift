@@ -15,7 +15,6 @@ struct ProductDetailView: View {
     
     init(product: Product) {
         self.product = product
-        // Initialize @State property using underscore syntax before self is used
         self._isSelling = State(wrappedValue: UserDefaults.standard.bool(forKey: "defaultToSelling"))
     }
     
@@ -49,19 +48,27 @@ struct ProductDetailView: View {
                     .font(.body)
                     .padding(.horizontal)
 
-                // Action Button and Toggle
+                // Add product type indicator
+                HStack {
+                    Image(systemName: product.type == .listing ? "tag" : "magnifyingglass")
+                    Text(product.type == .listing ? "Listed for Sale" : "Buying Request")
+                        .foregroundColor(.secondary)
+                }
+                .padding(.horizontal)
+                
+                // Action button and toggle
                 VStack(spacing: 8) {
                     Button(action: {
                         if isSelling {
-                            print("Listed for sale: \(product.title)")
+                            print("Response to \(product.type == .listing ? "listing" : "request"): \(product.title)")
                         } else {
-                            print("Added to cart: \(product.title)")
+                            print(product.type == .listing ? "Added to cart" : "Created similar request")
                         }
                     }) {
-                        Text(isSelling ? "Sell Now" : "Add to Cart")
+                        Text(buttonTitle)
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(isSelling ? Color.orange : Color.blue)
+                            .background(buttonColor)
                             .foregroundColor(.white)
                             .cornerRadius(10)
                             .shadow(radius: 3)
@@ -69,9 +76,9 @@ struct ProductDetailView: View {
                     
                     Button(action: {
                         isSelling.toggle()
-                        defaultToSelling = isSelling // Save preference when toggled
+                        defaultToSelling = isSelling
                     }) {
-                        Text(isSelling ? "Buy this item instead?" : "Sell this item instead?")
+                        Text(toggleText)
                             .font(.subheadline)
                             .foregroundColor(.gray)
                     }
@@ -82,18 +89,55 @@ struct ProductDetailView: View {
         }
         .navigationTitle(product.title)
     }
+    
+    // Helper computed properties for button states
+    private var buttonTitle: String {
+        switch (product.type, isSelling) {
+        case (.listing, false):
+            return "Add to Cart"
+        case (.listing, true):
+            return "Sell Similar Item"
+        case (.request, false):
+            return "Make Similar Request"
+        case (.request, true):
+            return "Fulfill This Request"
+        }
+    }
+    
+    private var buttonColor: Color {
+        switch (product.type, isSelling) {
+        case (.listing, false), (.request, false):
+            return .blue
+        case (.listing, true), (.request, true):
+            return .orange
+        }
+    }
+    
+    private var toggleText: String {
+        switch (product.type, isSelling) {
+        case (.listing, false):
+            return "Sell similar item instead?"
+        case (.listing, true):
+            return "Buy this item instead?"
+        case (.request, false):
+            return "Fulfill this request instead?"
+        case (.request, true):
+            return "Make similar request instead?"
+        }
+    }
 }
 
-// Add preview provider
+// Preview
 #Preview {
-    let sampleProduct = Product(
-        title: "LEGO Porsche 911",
-        price: 99.99,
-        description: "Cool car!",
-        image: "porche911" // Make sure this matches an image in your assets
-    )
-    
-    ProductDetailView(product: sampleProduct)
+    NavigationView {
+        ProductDetailView(product: .sampleListing)
+    }
+}
+
+#Preview("Request Preview") {
+    NavigationView {
+        ProductDetailView(product: .sampleRequest)
+    }
 }
 
 

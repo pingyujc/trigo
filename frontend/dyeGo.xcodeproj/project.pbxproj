@@ -12,7 +12,7 @@
 		DF2169632D62D185002E5BFE /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF21695D2D62D185002E5BFE /* AuthService.swift */; };
 		DF2169642D62D185002E5BFE /* ProductService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF21695E2D62D185002E5BFE /* ProductService.swift */; };
 		DF2169672D62D2C5002E5BFE /* dysGoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2169652D62D2C5002E5BFE /* dysGoApp.swift */; };
-		DF2169A22D62D6CB002E5BFE /* CreateProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF21698D2D62D6CB002E5BFE /* CreateProductView.swift */; };
+		DF2169A22D62D6CB002E5BFE /* CreateListingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF21698D2D62D6CB002E5BFE /* CreateListingView.swift */; };
 		DF2169A32D62D6CB002E5BFE /* CountryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF21698A2D62D6CB002E5BFE /* CountryButton.swift */; };
 		DF2169A42D62D6CB002E5BFE /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2169992D62D6CB002E5BFE /* ProfileView.swift */; };
 		DF2169A52D62D6CB002E5BFE /* CreateOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF21698C2D62D6CB002E5BFE /* CreateOptionsView.swift */; };
@@ -29,6 +29,7 @@
 		DF2169B02D62D6CB002E5BFE /* CategoryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2169892D62D6CB002E5BFE /* CategoryButton.swift */; };
 		DF2169B12D62D6CB002E5BFE /* ProductDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2169932D62D6CB002E5BFE /* ProductDetailView.swift */; };
 		DF2169B22D62D6CB002E5BFE /* SectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2169942D62D6CB002E5BFE /* SectionView.swift */; };
+		DFEF7F172D6D8C0B003143DF /* ProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFEF7F162D6D8C0B003143DF /* ProductViewModel.swift */; };
 		DFF234222D2624C300007B50 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF234122D2624C300007B50 /* ProfileViewModel.swift */; };
 		DFF234232D2624C300007B50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DFF234142D2624C300007B50 /* Assets.xcassets */; };
 		DFF234242D2624C300007B50 /* MarketplaceModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF234162D2624C300007B50 /* MarketplaceModels.swift */; };
@@ -44,7 +45,7 @@
 		DF2169892D62D6CB002E5BFE /* CategoryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryButton.swift; sourceTree = "<group>"; };
 		DF21698A2D62D6CB002E5BFE /* CountryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryButton.swift; sourceTree = "<group>"; };
 		DF21698C2D62D6CB002E5BFE /* CreateOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOptionsView.swift; sourceTree = "<group>"; };
-		DF21698D2D62D6CB002E5BFE /* CreateProductView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProductView.swift; sourceTree = "<group>"; };
+		DF21698D2D62D6CB002E5BFE /* CreateListingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateListingView.swift; sourceTree = "<group>"; };
 		DF21698E2D62D6CB002E5BFE /* CreateRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRequestView.swift; sourceTree = "<group>"; };
 		DF2169902D62D6CB002E5BFE /* FavoriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteView.swift; sourceTree = "<group>"; };
 		DF2169922D62D6CB002E5BFE /* ProductCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCard.swift; sourceTree = "<group>"; };
@@ -59,6 +60,7 @@
 		DF21699E2D62D6CB002E5BFE /* TrendingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendingView.swift; sourceTree = "<group>"; };
 		DF2169A02D62D6CB002E5BFE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DF277B182D1E7863000CD9F7 /* dyeGo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dyeGo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DFEF7F162D6D8C0B003143DF /* ProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewModel.swift; sourceTree = "<group>"; };
 		DFF234122D2624C300007B50 /* ProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		DFF234142D2624C300007B50 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DFF234162D2624C300007B50 /* MarketplaceModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarketplaceModels.swift; sourceTree = "<group>"; };
@@ -121,7 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				DF21698C2D62D6CB002E5BFE /* CreateOptionsView.swift */,
-				DF21698D2D62D6CB002E5BFE /* CreateProductView.swift */,
+				DF21698D2D62D6CB002E5BFE /* CreateListingView.swift */,
 				DF21698E2D62D6CB002E5BFE /* CreateRequestView.swift */,
 			);
 			path = Create;
@@ -223,6 +225,7 @@
 		DFF234112D2624C300007B50 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				DFEF7F162D6D8C0B003143DF /* ProductViewModel.swift */,
 				DFF234122D2624C300007B50 /* ProfileViewModel.swift */,
 			);
 			path = ViewModels;
@@ -325,7 +328,7 @@
 			files = (
 				DFF234222D2624C300007B50 /* ProfileViewModel.swift in Sources */,
 				DF2169672D62D2C5002E5BFE /* dysGoApp.swift in Sources */,
-				DF2169A22D62D6CB002E5BFE /* CreateProductView.swift in Sources */,
+				DF2169A22D62D6CB002E5BFE /* CreateListingView.swift in Sources */,
 				DF2169A32D62D6CB002E5BFE /* CountryButton.swift in Sources */,
 				DF2169A42D62D6CB002E5BFE /* ProfileView.swift in Sources */,
 				DF2169A52D62D6CB002E5BFE /* CreateOptionsView.swift in Sources */,
@@ -347,6 +350,7 @@
 				DF2169632D62D185002E5BFE /* AuthService.swift in Sources */,
 				DF2169642D62D185002E5BFE /* ProductService.swift in Sources */,
 				DF2169462D597296002E5BFE /* Product.swift in Sources */,
+				DFEF7F172D6D8C0B003143DF /* ProductViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
