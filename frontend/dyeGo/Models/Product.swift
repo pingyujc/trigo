@@ -17,45 +17,63 @@ enum ProductType: String, Codable {
 struct Product: Identifiable, Codable {
     let id: String
     let title: String
-    let price: Double
     let description: String
-    let image: String
-    let country: Country
     let category: Category
-    let sellerId: String
-    let createdAt: Date
-    var isAvailable: Bool
-    var viewCount: Int
-    var likeCount: Int
-    let type: ProductType
+    let country: Country
+    var image: String
     
-    // initializer
-    init(id: String = UUID().uuidString,
-         title: String,
-         price: Double,
-         description: String,
-         image: String,
-         country: Country = .unitedStates,
-         category: Category = .clothing,
-         sellerId: String = "",
-         createdAt: Date = Date(),
-         isAvailable: Bool = true,
-         viewCount: Int = 0,
-         likeCount: Int = 0,
-         type: ProductType = .listing) {
-        self.id = id
-        self.title = title
-        self.price = price
-        self.description = description
-        self.image = image
-        self.country = country
-        self.category = category
-        self.sellerId = sellerId
-        self.createdAt = createdAt
-        self.isAvailable = isAvailable
-        self.viewCount = viewCount
-        self.likeCount = likeCount
-        self.type = type
+    // Statistics
+    var viewCount: Int
+    var favoriteCount: Int
+    
+    // Market Data
+    var listings: [Listing]
+    var requests: [Request]
+    
+    var lowestListingPrice: Double? {
+        listings.filter { $0.isActive }.map { $0.price }.min()
+    }
+    
+    var highestRequestPrice: Double? {
+        requests.filter { $0.isActive }.map { $0.maxBudget }.max()
+    }
+    
+}
+
+struct Listing: Identifiable, Codable {
+    let id: String
+    let productId: String
+    let sellerId: String
+    let price: Double
+    let condition: ItemCondition
+    let createdAt: Date
+    var isActive: Bool
+    
+    // Additional details
+    var notes: String?
+}
+
+struct Request: Identifiable, Codable {
+    let id: String
+    let productId: String
+    let buyerId: String
+    let maxBudget: Double
+    let createdAt: Date
+    var isActive: Bool
+    
+    // Additional details
+    var notes: String?
+//    var urgencyLevel: UrgencyLevel
+}
+
+enum ItemCondition: String, Codable, CaseIterable {
+    case new = "New"
+    case likeNew = "Like New"
+    case good = "Good"
+    case fair = "Fair"
+    
+    var description: String {
+        rawValue
     }
 }
 
@@ -63,25 +81,51 @@ struct Product: Identifiable, Codable {
 extension Product {
     static var sampleListing: Product {
         Product(
+            id: "sample-listing-1",
             title: "Sample Listing",
-            price: 99.99,
             description: "This is a sample product listing",
-            image: "",
+            category: .electronics,
             country: .unitedStates,
-            type: .listing
+            image: "porche911",
+            viewCount: 100,
+            favoriteCount: 25,
+            listings: [
+                Listing(
+                    id: "listing-1",
+                    productId: "sample-listing-1",
+                    sellerId: "seller-123",
+                    price: 199.99,
+                    condition: .new,
+                    createdAt: Date(),
+                    isActive: true
+                )
+            ],
+            requests: []
         )
     }
-    
+
     static var sampleRequest: Product {
         Product(
+            id: "sample-request-1",
             title: "Looking for Vintage Camera",
-            price: 150.00,
             description: "Seeking a vintage Polaroid camera in good condition",
-            image: "",
-            country: .unitedStates,
             category: .electronics,
-            type: .request
-
+            country: .unitedStates,
+            image: "camera-image",
+            viewCount: 50,
+            favoriteCount: 10,
+            listings: [],
+            requests: [
+                Request(
+                    id: "request-1",
+                    productId: "sample-request-1",
+                    buyerId: "buyer-456",
+                    maxBudget: 150.00,
+                    createdAt: Date(),
+                    isActive: true,
+                    notes: "Preferably with original packaging"
+                )
+            ]
         )
     }
 }

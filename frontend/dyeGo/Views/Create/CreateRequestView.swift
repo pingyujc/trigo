@@ -5,55 +5,38 @@ struct CreateRequestView: View {
     @EnvironmentObject var productViewModel: ProductViewModel
     
     // Form fields
-    @State private var title = ""
+    @State private var selectedProductId: String = "1"
+    // default this to 1 just for MVP, to make sure the picker can select the right products
     @State private var maxPrice = ""
-    @State private var description = ""
-    @State private var selectedCategory: Category = .clothing
-    @State private var selectedCountry: Country = .unitedStates
-    @State private var image = "" // Optional for requests
+    @State private var notes = ""
     
     var body: some View {
         NavigationView {
             Form {
-                // Title
-                Section(header: Text("What are you looking for?")) {
-                    TextField("Enter title", text: $title)
+                // Product Selection
+                Section(header: Text("Select Product")) {
+                    Picker("Select a Product", selection: $selectedProductId) {
+                        ForEach(productViewModel.products) { product in
+                            Text(product.title).tag(product.id) // Use 'id' instead of 'product'
+                        }
+                    }
+                    .pickerStyle(MenuPickerStyle())
                 }
                 
-                // Price
+                // Maximum Price
                 Section(header: Text("Maximum Price")) {
                     TextField("Enter maximum price", text: $maxPrice)
                         .keyboardType(.decimalPad)
                 }
                 
-                // Description
-                Section(header: Text("Details")) {
-                    TextEditor(text: $description)
+                // Notes
+                Section(header: Text("Notes (optional)")) {
+                    TextEditor(text: $notes)
                         .frame(height: 100)
-                        .placeholder(when: description.isEmpty) {
+                        .placeholder(when: notes.isEmpty) {
                             Text("Describe what you're looking for (condition, size, color, etc.)")
                                 .foregroundColor(.gray)
                         }
-                }
-                
-                // Category
-                Section(header: Text("Category")) {
-                    Picker("Category", selection: $selectedCategory) {
-                        ForEach(Category.allCases, id: \.self) { category in
-                            Text(category.rawValue.capitalized)
-                                .tag(category)
-                        }
-                    }
-                }
-                
-                // Country
-                Section(header: Text("Country")) {
-                    Picker("Country", selection: $selectedCountry) {
-                        ForEach(Country.allCases, id: \.self) { country in
-                            Text(country.rawValue)
-                                .tag(country)
-                        }
-                    }
                 }
             }
             .navigationTitle("Create Request")
@@ -71,27 +54,29 @@ struct CreateRequestView: View {
                     .disabled(!isValid)
                 }
             }
+            .onAppear {
+                print("Products loaded in createRequestView: \(productViewModel.products)")
+            }
+            .task {
+                // Setup and initial fetch when view appears
+                await productViewModel.setup()
+            }
+
         }
     }
     
     private var isValid: Bool {
-        !title.isEmpty && 
-        !maxPrice.isEmpty && 
-        !description.isEmpty &&
-        (Double(maxPrice) ?? 0) > 0
+        selectedProductId != "" && !maxPrice.isEmpty && (Double(maxPrice) ?? 0) > 0
     }
     
     private func createRequest() {
         guard let priceValue = Double(maxPrice) else { return }
         
-        productViewModel.createRequest(
-            title: title,
-            price: priceValue,
-            description: description,
-            image: image,
-            category: selectedCategory,
-            country: selectedCountry
-        )
+        // Ensure a valid product ID is selected
+        guard !selectedProductId.isEmpty else { return }
+        
+        // Call the productViewModel to create the request
+        // productViewModel.createRequest(productId: selectedProductId, maxPrice: priceValue, notes: notes)
         
         dismiss()
     }

@@ -11,38 +11,38 @@ import SwiftUI
 struct SectionView: View {
 	let title: String
 	let products: [Product]
+	
 	var body: some View {
-	    VStack(alignment: .leading) {
-	        Text(title)
-	            .font(.headline)
-	            .padding(.bottom, 5)
-	        ScrollView(.horizontal, showsIndicators: false) {
-	            LazyHStack(spacing: 15) {
-	                ForEach(products) { product in
-	                    NavigationLink(destination: ProductDetailView(product: product)) {
-	                        ProductCard(product: product)
-	                    }
-	                    .buttonStyle(PlainButtonStyle()) // Prevents default link styling
-	                }
-	            }
-	        }
-	    }
+		VStack(alignment: .leading, spacing: 12) {
+			Text(title)
+				.font(.title2)
+				.bold()
+				.padding(.horizontal)
+			
+			ScrollView(.horizontal, showsIndicators: false) {
+				HStack(alignment: .top, spacing: 15) {
+					ForEach(products) { product in
+						NavigationLink(destination: ProductDetailView(viewModel: ProductDetailViewModel(product: product))) {
+							ProductCard(product: product)
+						}
+					}
+				}
+				.padding(.horizontal)
+			}
+		}
 	}
 }
 
 #Preview {
-    NavigationView {
-        SectionView(
-            title: "Popular Products",
-            products: [
-                Product(title: "Porche 911", price: 399.99, description: "Cool car.", image: "porche911"),
-                Product(title: "G Wagon", price: 500, description: "Huge car.", image: "benzG500"),
-                Product(title: "lmabo5000", price: 1000, description: "Fast car.", image: "lambo5000"),
-                Product(title: "McLaren P1", price: 1999, description: "Expensive car.", image: "mclarenP1")
-
-
-            ]
-        )
-    }
+	// Create sample products for preview
+	let sampleProducts = [
+		Product.sampleListing,
+		Product.sampleRequest,
+		Product.sampleListing
+	]
+	
+	return NavigationView {
+		SectionView(title: "Trending Products", products: sampleProducts)
+	}
 }
 

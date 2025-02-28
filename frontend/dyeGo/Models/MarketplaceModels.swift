@@ -28,6 +28,7 @@ enum Category: String, Codable, CaseIterable {
     case electronics = "Electronics"
     case home = "Home"
     case sports = "Sports"
+    case other = "Other"
     
     var name: String { return self.rawValue }
 }
@@ -42,18 +43,17 @@ enum Country: String, Codable, CaseIterable {
     var name: String { return self.rawValue }
 }
 
-enum SortOption: CaseIterable {
-    case recent, priceAsc, priceDesc, popular
+// Supporting enum
+enum SortOption: String, CaseIterable {
+    case recent = "Most Recent"
+    case priceHighToLow = "Price: High to Low"
+    case priceLowToHigh = "Price: Low to High"
+    case mostViewed = "Most Viewed"
+    case mostFavorited = "Most Favorited"
     
-    var displayName: String {
-        switch self {
-        case .recent: return "Most Recent"
-        case .priceAsc: return "Price: Low to High"
-        case .priceDesc: return "Price: High to Low"
-        case .popular: return "Most Popular"
-        }
-    }
+    var displayName: String { rawValue }
 }
+
 
 enum Filter: CaseIterable {
     case inStock, freeShipping, onSale
