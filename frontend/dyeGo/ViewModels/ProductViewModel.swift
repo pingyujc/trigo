@@ -28,6 +28,20 @@ class ProductViewModel: ObservableObject {
         await fetchProducts()
     }
     
+    // Add this new method
+    func createProduct(_ product: Product) async throws {
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+            try await productService.createProduct(product)
+            // Refresh the products list after creating
+            await fetchProducts()
+        } catch {
+            self.error = error
+            throw error
+        }
+    }
     
     // Main fetch function
     func fetchProducts() async {
@@ -75,6 +89,54 @@ class ProductViewModel: ObservableObject {
             self.error = error
         }
         isLoading = false
+    }
+    
+    // Add these methods to ProductViewModel
+    func createListing(productId: String, price: Double, notes: String?) async throws {
+        isLoading = true
+        defer { isLoading = false }
+        
+        let listing = Listing(
+            id: UUID().uuidString,
+            productId: productId,
+            sellerId: "current-user-id", // You'll want to get this from your auth service
+            price: price,
+            condition: .new,  // You might want to make this configurable
+            createdAt: Date(),
+            isActive: true,
+            notes: notes
+        )
+        
+        do {
+            try await productService.createListing(listing)
+            await fetchProducts()  // Refresh products list
+        } catch {
+            self.error = error
+            throw error
+        }
+    }
+    
+    func createRequest(productId: String, maxPrice: Double, notes: String?) async throws {
+        isLoading = true
+        defer { isLoading = false }
+        
+        let request = Request(
+            id: UUID().uuidString,
+            productId: productId,
+            buyerId: "current-user-id", // You'll want to get this from your auth service
+            maxBudget: maxPrice,
+            createdAt: Date(),
+            isActive: true,
+            notes: notes
+        )
+        
+        do {
+            try await productService.createRequest(request)
+            await fetchProducts()  // Refresh products list
+        } catch {
+            self.error = error
+            throw error
+        }
     }
 }
 

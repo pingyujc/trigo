@@ -10,6 +10,13 @@ struct CreateRequestView: View {
     @State private var maxPrice = ""
     @State private var notes = ""
     
+    // Add optional parameter for pre-selected product
+    let preSelectedProductId: String?
+    
+    init(preSelectedProductId: String? = nil) {
+        self.preSelectedProductId = preSelectedProductId
+    }
+    
     var body: some View {
         NavigationView {
             Form {
@@ -55,7 +62,12 @@ struct CreateRequestView: View {
                 }
             }
             .onAppear {
-                print("Products loaded in createRequestView: \(productViewModel.products)")
+//                print("Products loaded in createRequestView: \(productViewModel.products)")
+                print("Number of Products in createRequestView: \(productViewModel.products.count)")
+
+                if let productId = preSelectedProductId {
+                    selectedProductId = productId
+                }
             }
             .task {
                 // Setup and initial fetch when view appears
@@ -75,10 +87,18 @@ struct CreateRequestView: View {
         // Ensure a valid product ID is selected
         guard !selectedProductId.isEmpty else { return }
         
-        // Call the productViewModel to create the request
-        // productViewModel.createRequest(productId: selectedProductId, maxPrice: priceValue, notes: notes)
-        
-        dismiss()
+        Task {
+            do {
+                try await productViewModel.createRequest(
+                    productId: selectedProductId,
+                    maxPrice: priceValue,
+                    notes: notes
+                )
+                dismiss()
+            } catch {
+                print("Error creating request: \(error)")
+            }
+        }
     }
 }
 

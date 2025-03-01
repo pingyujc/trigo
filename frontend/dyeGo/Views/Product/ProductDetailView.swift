@@ -35,13 +35,14 @@ struct ProductDetailView: View {
                 
                 // Market Stats
                 MarketStatsView(
-                    lastSalePrice: viewModel.product.lowestListingPrice ?? 0,
+                    lowestAsk: viewModel.product.lowestListingPrice ?? 0,
                     highestBid: viewModel.product.highestRequestPrice ?? 0
                 )
                 
                 // Main Action Section
                 if viewMode == .buy {
                     BuySection(
+                        product: viewModel.product,
                         listings: viewModel.product.listings.filter { $0.isActive },
                         onBuyTap: { listing in
                             // Handle buy action
@@ -49,6 +50,7 @@ struct ProductDetailView: View {
                     )
                 } else {
                     SellSection(
+                        product: viewModel.product,
                         requests: viewModel.product.requests.filter { $0.isActive },
                         onSellTap: { request in
                             // Handle sell action
@@ -105,16 +107,16 @@ struct ProductHeaderView: View {
 }
 
 struct MarketStatsView: View {
-    let lastSalePrice: Double
+    let lowestAsk: Double
     let highestBid: Double
     
     var body: some View {
         HStack(spacing: 30) {
             VStack(spacing: 4) {
-                Text("Last Sale")
+                Text("Lowest Ask")
                     .font(.caption)
                     .foregroundColor(.secondary)
-                Text("$\(lastSalePrice, specifier: "%.2f")")
+                Text("$\(lowestAsk, specifier: "%.2f")")
                     .font(.title3)
                     .bold()
             }
@@ -135,6 +137,7 @@ struct MarketStatsView: View {
 }
 
 struct BuySection: View {
+    let product: Product
     let listings: [Listing]
     let onBuyTap: (Listing) -> Void
     
@@ -172,11 +175,28 @@ struct BuySection: View {
                     .foregroundColor(.secondary)
                     .padding()
             }
+            
+            // Add Create Request Button (when no listings available)
+            NavigationLink(
+                destination: CreateRequestView(preSelectedProductId: product.id)
+            ) {
+                HStack {
+                    Image(systemName: "plus.circle.fill")
+                    Text("Bid")
+                }
+                .foregroundColor(.green)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(Color(.systemBackground))
+                .cornerRadius(8)
+                .shadow(radius: 1)
+            }
         }
     }
 }
 
 struct SellSection: View {
+    let product: Product
     let requests: [Request]
     let onSellTap: (Request) -> Void
     
@@ -213,6 +233,22 @@ struct SellSection: View {
                 Text("No active requests")
                     .foregroundColor(.secondary)
                     .padding()
+            }
+            
+            // Add Create Listing Button
+            NavigationLink(
+                destination: CreateListingView(preSelectedProductId: product.id)
+            ) {
+                HStack {
+                    Image(systemName: "plus.circle.fill")
+                    Text("Ask")
+                }
+                .foregroundColor(.blue)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(Color(.systemBackground))
+                .cornerRadius(8)
+                .shadow(radius: 1)
             }
         }
     }

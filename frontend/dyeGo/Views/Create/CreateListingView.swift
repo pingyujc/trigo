@@ -8,8 +8,15 @@ struct CreateListingView: View {
     @State private var selectedProductId: String = "1"
     @State private var price = ""
     @State private var notes = ""
-
-
+    
+    // Add optional parameter for pre-selected product
+    let preSelectedProductId: String?
+    
+    init(preSelectedProductId: String? = nil) {
+        self.preSelectedProductId = preSelectedProductId
+        if preSelectedProductId != nil {
+            selectedProductId = preSelectedProductId!        }
+    }
     
     var body: some View {
         
@@ -17,8 +24,8 @@ struct CreateListingView: View {
             Form {
                 // Product Selection
                 // Debugging: Print the products list
-                Text("Products count: \(productViewModel.products.count)")
-                    .foregroundColor(.red)
+//                Text("Products count: \(productViewModel.products.count)")
+//                    .foregroundColor(.red)
                 
                 Section(header: Text("Select Product")) {
                     
@@ -63,7 +70,11 @@ struct CreateListingView: View {
                 }
             }
             .onAppear {
-                print("Products loaded in CreateListingView: \(productViewModel.products)")
+                print("Number of Products in CreateListingView: \(productViewModel.products.count)")
+//                print("Products in CreateListingView: \(productViewModel.products)")
+                if let productId = preSelectedProductId {
+                    selectedProductId = productId
+                }
             }
             .task {
                 // Setup and initial fetch when view appears
@@ -83,10 +94,18 @@ struct CreateListingView: View {
         // Ensure a valid product ID is selected
         guard !selectedProductId.isEmpty else { return }
         
-        // Call the productViewModel to create the listing with just the product ID
-        // productViewModel.createListing(productId: selectedProductId, price: priceValue, notes: notes)
-        
-        dismiss()
+        Task {
+            do {
+                try await productViewModel.createListing(
+                    productId: selectedProductId,
+                    price: priceValue,
+                    notes: notes
+                )
+                dismiss()
+            } catch {
+                print("Error creating listing: \(error)")
+            }
+        }
     }
 }
 

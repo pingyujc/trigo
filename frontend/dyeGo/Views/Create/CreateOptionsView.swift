@@ -1,77 +1,85 @@
 import SwiftUI
 
 struct CreateOptionsView: View {
-    @State private var showingListingSheet = false
-    @State private var showingRequestSheet = false
-    @EnvironmentObject var productViewModel: ProductViewModel
+    @Environment(\.dismiss) var dismiss
+    @StateObject private var productViewModel = ProductViewModel()
+    @State private var selectedOption: CreateOption?
+    
+    enum CreateOption: String, CaseIterable {
+        case product = "Product"
+        case listing = "Listing"
+        case request = "Request"
+        
+        var description: String {
+            switch self {
+            case .product:
+                return "Create a new product that others can list or request"
+            case .listing:
+                return "List an existing product for sale"
+            case .request:
+                return "Request to buy an existing product"
+            }
+        }
+        
+        var icon: String {
+            switch self {
+            case .product:
+                return "cube.box"
+            case .listing:
+                return "tag"
+            case .request:
+                return "hand.raised"
+            }
+        }
+    }
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 20) {
-                Text("What would you like to create?")
-                    .font(.headline)
-                    .padding(.top, 30)
-                
-                NavigationLink(destination: CreateListingView()) {
+            List(CreateOption.allCases, id: \.self) { option in
+                NavigationLink(
+                    destination: destinationView(for: option)
+                ) {
                     HStack {
-                        Image(systemName: "tag.fill")
-                            .font(.title2)
+                        Image(systemName: option.icon)
+                            .foregroundColor(.blue)
+                            .frame(width: 30)
+                        
                         VStack(alignment: .leading) {
-                            Text("Make a Listing")
+                            Text(option.rawValue)
                                 .font(.headline)
-                            Text("Sell an item to potential buyers")
+                            Text(option.description)
                                 .font(.caption)
                                 .foregroundColor(.gray)
                         }
-                        Spacer()
-                        Image(systemName: "chevron.right")
-                            .foregroundColor(.gray)
                     }
-                    .padding()
-                    .background(Color(.systemBackground))
-                    .cornerRadius(10)
-                    .shadow(radius: 2)
+                    .padding(.vertical, 8)
                 }
-                
-                NavigationLink(destination: CreateRequestView()) {
-                    HStack {
-                        Image(systemName: "hand.raised.fill")
-                            .font(.title2)
-                        VStack(alignment: .leading) {
-                            Text("Make a Request")
-                                .font(.headline)
-                            Text("Request an item you're looking for")
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                        }
-                        Spacer()
-                        Image(systemName: "chevron.right")
-                            .foregroundColor(.gray)
+            }
+            .navigationTitle("Create New")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
                     }
-                    .padding()
-                    .background(Color(.systemBackground))
-                    .cornerRadius(10)
-                    .shadow(radius: 2)
                 }
-                
-                Spacer()
             }
-            .padding()
-            .navigationTitle("Create")
-            .sheet(isPresented: $showingListingSheet) {
-                CreateListingView()
-                    .environmentObject(productViewModel)
-            }
-            .sheet(isPresented: $showingRequestSheet) {
-                CreateRequestView()
-                    .environmentObject(productViewModel)
-            }
+        }
+        .environmentObject(productViewModel)
+    }
+    
+    @ViewBuilder
+    private func destinationView(for option: CreateOption) -> some View {
+        switch option {
+        case .product:
+            CreateProductView()
+        case .listing:
+            CreateListingView(preSelectedProductId: nil)
+        case .request:
+            CreateRequestView(preSelectedProductId: nil)
         }
     }
 }
 
-struct CreateOptionsView_Previews: PreviewProvider {
-    static var previews: some View {
-        CreateOptionsView()
-    }
+#Preview {
+    CreateOptionsView()
 } 

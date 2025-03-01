@@ -30,6 +30,8 @@
 		DF2169B12D62D6CB002E5BFE /* ProductDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2169932D62D6CB002E5BFE /* ProductDetailView.swift */; };
 		DF2169B22D62D6CB002E5BFE /* SectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2169942D62D6CB002E5BFE /* SectionView.swift */; };
 		DF4CB6032D70F0C5006479A0 /* ProductDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4CB6022D70F0C5006479A0 /* ProductDetailViewModel.swift */; };
+		DF4CB6052D72C5C9006479A0 /* CreateProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4CB6042D72C5BD006479A0 /* CreateProductView.swift */; };
+		DF4CB6072D72CBC0006479A0 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4CB6062D72CBC0006479A0 /* ImagePicker.swift */; };
 		DFEF7F172D6D8C0B003143DF /* ProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFEF7F162D6D8C0B003143DF /* ProductViewModel.swift */; };
 		DFF234222D2624C300007B50 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF234122D2624C300007B50 /* ProfileViewModel.swift */; };
 		DFF234232D2624C300007B50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DFF234142D2624C300007B50 /* Assets.xcassets */; };
@@ -62,6 +64,8 @@
 		DF2169A02D62D6CB002E5BFE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DF277B182D1E7863000CD9F7 /* dyeGo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dyeGo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF4CB6022D70F0C5006479A0 /* ProductDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewModel.swift; sourceTree = "<group>"; };
+		DF4CB6042D72C5BD006479A0 /* CreateProductView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProductView.swift; sourceTree = "<group>"; };
+		DF4CB6062D72CBC0006479A0 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		DFEF7F162D6D8C0B003143DF /* ProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewModel.swift; sourceTree = "<group>"; };
 		DFF234122D2624C300007B50 /* ProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		DFF234142D2624C300007B50 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -115,6 +119,7 @@
 		DF21698B2D62D6CB002E5BFE /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				DF4CB6062D72CBC0006479A0 /* ImagePicker.swift */,
 				DF2169892D62D6CB002E5BFE /* CategoryButton.swift */,
 				DF21698A2D62D6CB002E5BFE /* CountryButton.swift */,
 			);
@@ -124,6 +129,7 @@
 		DF21698F2D62D6CB002E5BFE /* Create */ = {
 			isa = PBXGroup;
 			children = (
+				DF4CB6042D72C5BD006479A0 /* CreateProductView.swift */,
 				DF21698C2D62D6CB002E5BFE /* CreateOptionsView.swift */,
 				DF21698D2D62D6CB002E5BFE /* CreateListingView.swift */,
 				DF21698E2D62D6CB002E5BFE /* CreateRequestView.swift */,
@@ -346,11 +352,13 @@
 				DF2169AE2D62D6CB002E5BFE /* LoginPromptView.swift in Sources */,
 				DF2169AF2D62D6CB002E5BFE /* SearchView.swift in Sources */,
 				DF2169B02D62D6CB002E5BFE /* CategoryButton.swift in Sources */,
+				DF4CB6072D72CBC0006479A0 /* ImagePicker.swift in Sources */,
 				DF2169B12D62D6CB002E5BFE /* ProductDetailView.swift in Sources */,
 				DF2169B22D62D6CB002E5BFE /* SectionView.swift in Sources */,
 				DFF234242D2624C300007B50 /* MarketplaceModels.swift in Sources */,
 				DF2169622D62D185002E5BFE /* Constants.swift in Sources */,
 				DF4CB6032D70F0C5006479A0 /* ProductDetailViewModel.swift in Sources */,
+				DF4CB6052D72C5C9006479A0 /* CreateProductView.swift in Sources */,
 				DF2169632D62D185002E5BFE /* AuthService.swift in Sources */,
 				DF2169642D62D185002E5BFE /* ProductService.swift in Sources */,
 				DF2169462D597296002E5BFE /* Product.swift in Sources */,

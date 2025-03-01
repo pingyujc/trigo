@@ -245,6 +245,13 @@ class ProductService {
         products[productIndex].listings.removeAll { $0.id == id }
     }
     
+    /// Create a new listing
+    func createListing(_ listing: Listing) async throws {
+        if let index = products.firstIndex(where: { $0.id == listing.productId }) {
+            products[index].listings.append(listing)
+        }
+    }
+    
     // MARK: - Request Operations
     
     /// Add a request to a product
@@ -267,6 +274,13 @@ class ProductService {
             throw ProductError.notFound
         }
         products[productIndex].requests.removeAll { $0.id == id }
+    }
+    
+    /// Create a new request
+    func createRequest(_ request: Request) async throws {
+        if let index = products.firstIndex(where: { $0.id == request.productId }) {
+            products[index].requests.append(request)
+        }
     }
     
     // MARK: - Errors
