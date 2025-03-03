@@ -7,9 +7,10 @@
 
 import SwiftUI
 
-struct TrendingView: View {
+struct HomeView: View {
     @StateObject private var viewModel: ProductViewModel
     @State private var selectedCountry: Country?
+    @State private var searchText = ""
     
     init(viewModel: ProductViewModel = ProductViewModel()) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -18,7 +19,18 @@ struct TrendingView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(spacing: 20) {
+                VStack(spacing: 24) {
+                    // Search Bar
+                    HStack {
+                        Image(systemName: "magnifyingglass")
+                            .foregroundColor(.gray)
+                        TextField("What are you looking for?", text: $searchText)
+                    }
+                    .padding()
+                    .background(Color(.systemGray6).opacity(0.8))
+                    .cornerRadius(12)
+                    .padding(.horizontal)
+                    
                     // Country filter
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 12) {
@@ -35,33 +47,36 @@ struct TrendingView: View {
                                 )
                             }
                         }
-                        .padding(.horizontal)   
+                        .padding(.horizontal)
                     }
-
-//                     Products Grid
-//                    LazyVGrid(columns: [
-//                        GridItem(.flexible()),
-//                        GridItem(.flexible())
-//                    ], spacing: 16) {
-//                        ForEach(viewModel.products) { product in
-//                            NavigationLink(destination: ProductDetailView(viewModel: ProductDetailViewModel(product: product))) {
-//                                ProductCard(product: product)
-//                            }
-//                        }
-//                    }
-//                    .padding()
-                    LazyVStack(spacing: 20) {
-//                        SectionView(title: "Recently Viewed", products: mockRecentlyViewed)
-                        SectionView(title: "Trending Listings", products: viewModel.products)
-                        SectionView(title: "Trending Requests", products: viewModel.products)
+                    
+                    // Content Sections
+                    VStack(spacing: 32) {
+                        // Trending Listings Section
+                        VStack(alignment: .leading, spacing: 16) {
+                            Text("Trending Listings")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .padding(.horizontal)
+                            
+                            SectionView(title: "Trending Listings", products: viewModel.products)
+                        }
+                        
+                        // Trending Requests Section
+                        VStack(alignment: .leading, spacing: 16) {
+                            Text("Trending Requests")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .padding(.horizontal)
+                            
+                            SectionView(title: "Trending Requests", products: viewModel.products)
+                        }
                     }
                     .padding()
-                    .onAppear {
-                        print("Products loaded in CreateListingView: \(viewModel.products)")
-                    }
                 }
             }
-            .navigationTitle("Trending")
+            .navigationTitle("Welcome to home page")
+            .navigationBarTitleDisplayMode(.large)
             .task {
                 // Setup and initial fetch when view appears
                 await viewModel.setup()
@@ -96,7 +111,7 @@ struct TrendingView: View {
 
 // Preview
 #Preview {
-    TrendingView()
+    HomeView()
 }
 
 

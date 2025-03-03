@@ -12,10 +12,10 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
-            TrendingView()
+            HomeView()
                 .environmentObject(productViewModel)
                 .tabItem {
-                    Label("Trending", systemImage: "chart.line.uptrend.xyaxis")
+                    Label("Home", systemImage: "house")
                 }
             
             SearchView()
