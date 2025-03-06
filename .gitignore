@@ -12,3 +12,4 @@ bin/
 DerivedData/
 build/
 *.xcuserstate
+**/GoogleService-Info.plist
