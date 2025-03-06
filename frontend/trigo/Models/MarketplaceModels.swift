@@ -14,15 +14,6 @@ struct Item: Identifiable {
     // Add more properties as needed
 }
 
-struct User: Identifiable {
-    let id: String
-    var name: String
-    var email: String
-    var isSeller: Bool
-    var rating: Double?
-    // Add more properties as needed
-}
-
 enum Category: String, Codable, CaseIterable {
     case clothing = "Clothing"
     case electronics = "Electronics"

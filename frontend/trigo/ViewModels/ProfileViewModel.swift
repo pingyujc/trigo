@@ -12,7 +12,7 @@ class ProfileViewModel: ObservableObject {
             id: "1",
             name: "Test User",
             email: "test@example.com",
-            isSeller: false
+            username: "testuser"
         )
         
         checkAuthStatus()

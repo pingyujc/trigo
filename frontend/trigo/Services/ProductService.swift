@@ -1,4 +1,5 @@
 import Foundation
+import FirebaseFirestore
 
 // this file will be the util file for product stuff?
 // fetching, and CRUD
@@ -10,6 +11,9 @@ class ProductService {
     
     // In-memory storage
     private var products: [Product] = []
+    
+    private let db = Firestore.firestore()
+    private let userCollectionsService = UserCollectionsService.shared
     
     // Private init to enforce singleton pattern
     private init() {
@@ -223,64 +227,88 @@ class ProductService {
     
     // MARK: - Listing Operations
     
-    /// Add a listing to a product
-    func addListing(_ listing: Listing, toProduct productId: String)
-    async throws
-    {
-        guard let index = products.firstIndex(where: { $0.id == productId })
-        else {
-            throw ProductError.notFound
-        }
-        products[index].listings.append(listing)
-    }
-    
-    /// Remove a listing from a product
-    func removeListing(id: String, fromProduct productId: String) async throws {
-        guard
-            let productIndex = products.firstIndex(where: { $0.id == productId }
-            )
-        else {
-            throw ProductError.notFound
-        }
-        products[productIndex].listings.removeAll { $0.id == id }
-    }
-    
     /// Create a new listing
     func createListing(_ listing: Listing) async throws {
-        if let index = products.firstIndex(where: { $0.id == listing.productId }) {
-            products[index].listings.append(listing)
-        }
+        // 1. Add listing to product's listings collection
+        let listingRef = db.collection("products")
+            .document(listing.productId)
+            .collection("listings")
+            .document(listing.id)
+        
+        try await listingRef.setData(try listing.asDictionary())
+        
+        // 2. Add reference to user's listings collection
+        try await userCollectionsService.addListing(
+            userId: listing.sellerId,
+            productId: listing.productId,
+            listingId: listing.id
+        )
+    }
+    
+    /// Get listings for a product
+    func getListings(for productId: String) async throws -> [Listing] {
+        let snapshot = try await db.collection("products")
+            .document(productId)
+            .collection("listings")
+            .getDocuments()
+        
+        return try snapshot.documents.map { try $0.data(as: Listing.self) }
+    }
+    
+    /// Remove a listing
+    func removeListing(id: String, fromProduct productId: String, sellerId: String) async throws {
+        // 1. Remove from product's listings
+        try await db.collection("products")
+            .document(productId)
+            .collection("listings")
+            .document(id)
+            .delete()
+        
+        // 2. Remove from user's listings
+        try await userCollectionsService.removeListing(userId: sellerId, listingId: id)
     }
     
     // MARK: - Request Operations
     
-    /// Add a request to a product
-    func addRequest(_ request: Request, toProduct productId: String)
-    async throws
-    {
-        guard let index = products.firstIndex(where: { $0.id == productId })
-        else {
-            throw ProductError.notFound
-        }
-        products[index].requests.append(request)
-    }
-    
-    /// Remove a request from a product
-    func removeRequest(id: String, fromProduct productId: String) async throws {
-        guard
-            let productIndex = products.firstIndex(where: { $0.id == productId }
-            )
-        else {
-            throw ProductError.notFound
-        }
-        products[productIndex].requests.removeAll { $0.id == id }
-    }
-    
     /// Create a new request
     func createRequest(_ request: Request) async throws {
-        if let index = products.firstIndex(where: { $0.id == request.productId }) {
-            products[index].requests.append(request)
-        }
+        // 1. Add request to product's requests collection
+        let requestRef = db.collection("products")
+            .document(request.productId)
+            .collection("requests")
+            .document(request.id)
+        
+        try await requestRef.setData(try request.asDictionary())
+        
+        // 2. Add reference to user's requests collection
+        try await userCollectionsService.addRequest(
+            userId: request.buyerId,
+            productId: request.productId,
+            requestId: request.id
+        )
+    }
+    
+    /// Get requests for a product
+    func getRequests(for productId: String) async throws -> [Request] {
+        let snapshot = try await db.collection("products")
+            .document(productId)
+            .collection("requests")
+            .getDocuments()
+        
+        return try snapshot.documents.map { try $0.data(as: Request.self) }
+    }
+    
+    /// Remove a request
+    func removeRequest(id: String, fromProduct productId: String, buyerId: String) async throws {
+        // 1. Remove from product's requests
+        try await db.collection("products")
+            .document(productId)
+            .collection("requests")
+            .document(id)
+            .delete()
+        
+        // 2. Remove from user's requests
+        try await userCollectionsService.removeRequest(userId: buyerId, requestId: id)
     }
     
     // MARK: - Errors

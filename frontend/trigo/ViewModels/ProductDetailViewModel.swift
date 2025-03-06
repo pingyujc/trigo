@@ -14,23 +14,11 @@ class ProductDetailViewModel: ObservableObject {
         self.productService = productService
     }
     
-    func addListing(_ listing: Listing) async throws {
+    /// Refreshes the product data from the service
+    func refreshProduct() async throws {
         isLoading = true
         defer { isLoading = false }
         
-        try await productService.addListing(listing, toProduct: product.id)
-        try await refreshProduct()
-    }
-    
-    func addRequest(_ request: Request) async throws {
-        isLoading = true
-        defer { isLoading = false }
-        
-        try await productService.addRequest(request, toProduct: product.id)
-        try await refreshProduct()
-    }
-    
-    private func refreshProduct() async throws {
         product = try await productService.getProduct(id: product.id)
     }
 } 

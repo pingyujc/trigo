@@ -9,13 +9,15 @@ import Foundation
 import SwiftUI
 
 struct LoginView: View {
+    @Environment(\.dismiss) var dismiss
+    @StateObject private var authService = AuthService.shared
     @State private var email = ""
     @State private var password = ""
     @State private var errorMessage = ""
     @State private var isLoading = false
 
     var body: some View {
-        VStack {
+        VStack(spacing: 20) {
             Text("Login")
                 .font(.largeTitle)
                 .padding()
@@ -38,15 +40,33 @@ struct LoginView: View {
                         .progressViewStyle(CircularProgressViewStyle(tint: .white))
                 } else {
                     Text("Login")
+                        .frame(maxWidth: .infinity)
                 }
             }
             .foregroundColor(.white)
             .padding()
-            .frame(maxWidth: .infinity)
             .background(Color.blue)
             .cornerRadius(10)
             .disabled(isLoading)
-            .padding()
+
+            Text("OR")
+                .foregroundColor(.gray)
+
+            Button(action: googleLogin) {
+                HStack {
+                    Image(systemName: "g.circle.fill")
+                        .foregroundColor(.red)
+                    Text("Continue with Google")
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color(.systemBackground))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                )
+            }
+            .disabled(isLoading)
 
             if !errorMessage.isEmpty {
                 Text(errorMessage)
@@ -61,8 +81,37 @@ struct LoginView: View {
     }
 
     func emailLogin() {
+        guard !email.isEmpty && !password.isEmpty else {
+            errorMessage = "Please fill in all fields"
+            return
+        }
+
         isLoading = true
+        Task {
+            do {
+                _ = try await authService.signIn(email: email, password: password)
+                dismiss()
+            } catch {
+                errorMessage = error.localizedDescription
+            }
+            isLoading = false
+        }
     }
+
+    func googleLogin() {
+        isLoading = true
+        Task {
+            do {
+                let user = try await authService.signInWithGoogle()
+                print("Signed in with Google, userID: \(user.username)")
+                dismiss()
+            } catch {
+                errorMessage = error.localizedDescription
+            }
+            isLoading = false
+        }
+    }
+
 }
 
 struct LoginView_Previews: PreviewProvider {

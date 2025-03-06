@@ -17,10 +17,12 @@ class ProductViewModel: ObservableObject {
     @Published var sortOption: SortOption = .recent
     
     private let productService: ProductService
+    private let authService: AuthService
     
     // Remove @MainActor isolation from init
-    nonisolated init(productService: ProductService = ProductService.shared) {
+    nonisolated init(productService: ProductService = ProductService.shared, authService: AuthService = AuthService.shared) {
         self.productService = productService
+        self.authService = authService
     }
     
     // Add a separate setup method for async work
@@ -93,13 +95,17 @@ class ProductViewModel: ObservableObject {
     
     // Add these methods to ProductViewModel
     func createListing(productId: String, price: Double, notes: String?) async throws {
+        guard let currentUser = authService.currentUser else {
+            throw AuthError.userNotFound
+        }
+        
         isLoading = true
         defer { isLoading = false }
         
         let listing = Listing(
             id: UUID().uuidString,
             productId: productId,
-            sellerId: "current-user-id", // You'll want to get this from your auth service
+            sellerId: currentUser.id!,
             price: price,
             condition: .new,  // You might want to make this configurable
             createdAt: Date(),
@@ -107,36 +113,28 @@ class ProductViewModel: ObservableObject {
             notes: notes
         )
         
-        do {
-            try await productService.createListing(listing)
-            await fetchProducts()  // Refresh products list
-        } catch {
-            self.error = error
-            throw error
-        }
+        try await productService.createListing(listing)
     }
     
     func createRequest(productId: String, maxPrice: Double, notes: String?) async throws {
+        guard let currentUser = authService.currentUser else {
+            throw AuthError.userNotFound
+        }
+        
         isLoading = true
         defer { isLoading = false }
         
         let request = Request(
             id: UUID().uuidString,
             productId: productId,
-            buyerId: "current-user-id", // You'll want to get this from your auth service
+            buyerId: currentUser.id!,
             maxBudget: maxPrice,
             createdAt: Date(),
             isActive: true,
             notes: notes
         )
         
-        do {
-            try await productService.createRequest(request)
-            await fetchProducts()  // Refresh products list
-        } catch {
-            self.error = error
-            throw error
-        }
+        try await productService.createRequest(request)
     }
 }
 

@@ -33,29 +33,19 @@ struct ProfileView: View {
                         }
                     }
                     
-                    // Seller Section (if user is a seller)
-                    if viewModel.user.isSeller {
-                        Section("Seller Dashboard") {
-                            NavigationLink("Listed Items") {
-                                ListedItemsView()
-                            }
-                            NavigationLink("Sales History") {
-                                SalesHistoryView()
-                            }
-                            NavigationLink("Earnings") {
-                                EarningsView()
-                            }
+
+                    Section("Seller Dashboard") {
+                        NavigationLink("Listed Items") {
+                            ListedItemsView()
+                        }
+                        NavigationLink("Sales History") {
+                            SalesHistoryView()
+                        }
+                        NavigationLink("Earnings") {
+                            EarningsView()
                         }
                     }
-                    
-                    // Become a Seller button (if user is not a seller)
-                    if !viewModel.user.isSeller {
-                        Section {
-                            Button("Become a Seller") {
-                                viewModel.startSellerOnboarding()
-                            }
-                        }
-                    }
+
                     
                     // Sign Out
                     Section {

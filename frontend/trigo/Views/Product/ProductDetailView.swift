@@ -10,7 +10,11 @@ import SwiftUI
 
 struct ProductDetailView: View {
     @StateObject private var viewModel: ProductDetailViewModel
+    @EnvironmentObject private var productViewModel: ProductViewModel
     @State private var viewMode: ViewMode = .buy
+    @State private var showingPriceAlert = false
+    @State private var sellingPrice = ""
+    @State private var errorMessage: String?
     
     enum ViewMode {
         case buy, sell
@@ -45,7 +49,8 @@ struct ProductDetailView: View {
                         product: viewModel.product,
                         listings: viewModel.product.listings.filter { $0.isActive },
                         onBuyTap: { listing in
-                            // Handle buy action
+                            // Handle buy action - This would typically involve a purchase flow
+                            print("Buying listing: \(listing.id)")
                         }
                     )
                 } else {
@@ -53,7 +58,7 @@ struct ProductDetailView: View {
                         product: viewModel.product,
                         requests: viewModel.product.requests.filter { $0.isActive },
                         onSellTap: { request in
-                            // Handle sell action
+                            showingPriceAlert = true
                         }
                     )
                 }
@@ -70,6 +75,41 @@ struct ProductDetailView: View {
         }
         .navigationTitle(viewModel.product.title)
         .navigationBarTitleDisplayMode(.inline)
+        .alert("Enter Selling Price", isPresented: $showingPriceAlert) {
+            TextField("Price", text: $sellingPrice)
+                .keyboardType(.decimalPad)
+            Button("Cancel", role: .cancel) {
+                sellingPrice = ""
+            }
+            Button("Create Listing") {
+                guard let price = Double(sellingPrice) else {
+                    errorMessage = "Please enter a valid price"
+                    return
+                }
+                Task {
+                    do {
+                        try await productViewModel.createListing(
+                            productId: viewModel.product.id,
+                            price: price,
+                            notes: nil
+                        )
+                        try await viewModel.refreshProduct()
+                        sellingPrice = ""
+                    } catch {
+                        errorMessage = error.localizedDescription
+                    }
+                }
+            }
+        }
+        .alert("Error", isPresented: .constant(errorMessage != nil)) {
+            Button("OK") {
+                errorMessage = nil
+            }
+        } message: {
+            if let errorMessage = errorMessage {
+                Text(errorMessage)
+            }
+        }
     }
 }
 
@@ -111,28 +151,31 @@ struct MarketStatsView: View {
     let highestBid: Double
     
     var body: some View {
-        HStack(spacing: 30) {
-            VStack(spacing: 4) {
+        HStack(spacing: 20) {
+            VStack {
                 Text("Lowest Ask")
                     .font(.caption)
                     .foregroundColor(.secondary)
                 Text("$\(lowestAsk, specifier: "%.2f")")
-                    .font(.title3)
-                    .bold()
+                    .font(.headline)
+                    .foregroundColor(.green)
             }
             
-            VStack(spacing: 4) {
+            Divider()
+            
+            VStack {
                 Text("Highest Bid")
                     .font(.caption)
                     .foregroundColor(.secondary)
                 Text("$\(highestBid, specifier: "%.2f")")
-                    .font(.title3)
-                    .bold()
+                    .font(.headline)
+                    .foregroundColor(.blue)
             }
         }
         .padding()
-        .background(Color(.systemGray6))
+        .background(Color(.systemBackground))
         .cornerRadius(10)
+        .shadow(radius: 1)
     }
 }
 
