@@ -30,10 +30,16 @@ struct ContentView: View {
                     Label("Create", systemImage: "plus.circle.fill")
                 }
             
-            FavoriteView()
+//            FavoriteView()
+//                .environmentObject(productViewModel)
+//                .tabItem {
+//                    Label("Favorite", systemImage: "heart")
+//                }
+            
+            OrderView()
                 .environmentObject(productViewModel)
                 .tabItem {
-                    Label("Favorite", systemImage: "heart")
+                    Label("Order", systemImage: "clock.arrow.circlepath")
                 }
             
             ProfileView()
