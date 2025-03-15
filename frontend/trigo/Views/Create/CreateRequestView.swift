@@ -5,45 +5,68 @@ struct CreateRequestView: View {
     @EnvironmentObject var productViewModel: ProductViewModel
     
     // Form fields
-    @State private var selectedProductId: String = "1"
-    // default this to 1 just for MVP, to make sure the picker can select the right products
+    @State private var selectedProductId: String
     @State private var maxPrice = ""
     @State private var notes = ""
+    @State private var isLoading = true
+    @State private var errorMessage: String?
+    @State private var showError = false
     
     // Add optional parameter for pre-selected product
     let preSelectedProductId: String?
     
     init(preSelectedProductId: String? = nil) {
         self.preSelectedProductId = preSelectedProductId
+        _selectedProductId = State(initialValue: preSelectedProductId ?? "")
     }
     
     var body: some View {
         NavigationView {
-            Form {
-                // Product Selection
-                Section(header: Text("Select Product")) {
-                    Picker("Select a Product", selection: $selectedProductId) {
-                        ForEach(productViewModel.products) { product in
-                            Text(product.title).tag(product.id) // Use 'id' instead of 'product'
+            Group {
+                if isLoading {
+                    VStack {
+                        ProgressView("Loading products...")
+                        if let error = productViewModel.error {
+                            Text(error.localizedDescription)
+                                .foregroundColor(.red)
+                                .padding()
                         }
                     }
-                    .pickerStyle(MenuPickerStyle())
-                }
-                
-                // Maximum Price
-                Section(header: Text("Maximum Price")) {
-                    TextField("Enter maximum price", text: $maxPrice)
-                        .keyboardType(.decimalPad)
-                }
-                
-                // Notes
-                Section(header: Text("Notes (optional)")) {
-                    TextEditor(text: $notes)
-                        .frame(height: 100)
-                        .placeholder(when: notes.isEmpty) {
-                            Text("Describe what you're looking for (condition, size, color, etc.)")
-                                .foregroundColor(.gray)
+                } else {
+                    Form {
+                        Section(header: Text("Select Product")) {
+                            if productViewModel.products.isEmpty {
+                                Text("No products available")
+                                    .foregroundColor(.secondary)
+                            } else {
+                                Picker("Select a Product", selection: $selectedProductId) {
+                                    Text("Select a product").tag("")
+                                    ForEach(productViewModel.products) { product in
+                                        if let id = product.id {
+                                            Text(product.title).tag(id)
+                                        }
+                                    }
+                                }
+                                .pickerStyle(MenuPickerStyle())
+                            }
                         }
+                        
+                        // Maximum Price
+                        Section(header: Text("Maximum Price")) {
+                            TextField("Enter maximum price", text: $maxPrice)
+                                .keyboardType(.decimalPad)
+                        }
+                        
+                        // Notes
+                        Section(header: Text("Notes (optional)")) {
+                            TextEditor(text: $notes)
+                                .frame(height: 100)
+                                .placeholder(when: notes.isEmpty) {
+                                    Text("Describe what you're looking for (condition, size, color, etc.)")
+                                        .foregroundColor(.gray)
+                                }
+                        }
+                    }
                 }
             }
             .navigationTitle("Create Request")
@@ -58,23 +81,52 @@ struct CreateRequestView: View {
                     Button("Post") {
                         createRequest()
                     }
-                    .disabled(!isValid)
-                }
-            }
-            .onAppear {
-//                print("Products loaded in createRequestView: \(productViewModel.products)")
-                print("Number of Products in createRequestView: \(productViewModel.products.count)")
-
-                if let productId = preSelectedProductId {
-                    selectedProductId = productId
+                    .disabled(!isValid || isLoading)
                 }
             }
             .task {
-                // Setup and initial fetch when view appears
-                await productViewModel.setup()
+                await loadProducts()
             }
-
+            .alert("Error", isPresented: $showError) {
+                Button("OK") {
+                    errorMessage = nil
+                }
+            } message: {
+                if let errorMessage = errorMessage {
+                    Text(errorMessage)
+                }
+            }
         }
+    }
+    
+    private func loadProducts() async {
+        isLoading = true
+        
+        // If products are empty, fetch them
+        if productViewModel.products.isEmpty {
+            do {
+                try await productViewModel.fetchProducts()
+            } catch {
+                errorMessage = error.localizedDescription
+                showError = true
+                isLoading = false
+                return
+            }
+        }
+        
+        // Now verify the preselected product
+        if let productId = preSelectedProductId {
+            print("Checking product ID:", productId)
+            print("Available products:", productViewModel.products.map { $0.id })
+            let productExists = productViewModel.products.contains { $0.id == productId }
+            if !productExists {
+                selectedProductId = ""
+                errorMessage = "Selected product not found"
+                showError = true
+            }
+        }
+        
+        isLoading = false
     }
     
     private var isValid: Bool {
@@ -82,10 +134,18 @@ struct CreateRequestView: View {
     }
     
     private func createRequest() {
-        guard let priceValue = Double(maxPrice) else { return }
+        guard let priceValue = Double(maxPrice) else {
+            errorMessage = "Invalid price format"
+            showError = true
+            return
+        }
         
         // Ensure a valid product ID is selected
-        guard !selectedProductId.isEmpty else { return }
+        guard !selectedProductId.isEmpty else {
+            errorMessage = "Please select a product"
+            showError = true
+            return
+        }
         
         Task {
             do {
@@ -96,7 +156,8 @@ struct CreateRequestView: View {
                 )
                 dismiss()
             } catch {
-                print("Error creating request: \(error)")
+                errorMessage = error.localizedDescription
+                showError = true
             }
         }
     }

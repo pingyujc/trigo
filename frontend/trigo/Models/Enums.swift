@@ -1,5 +1,7 @@
 import Foundation
 
+// this is the enum for the app
+
 // Models for the marketplace
 struct Item: Identifiable {
     let id: String
@@ -15,28 +17,26 @@ struct Item: Identifiable {
 }
 
 enum Category: String, Codable, CaseIterable {
-    case clothing = "Clothing"
     case electronics = "Electronics"
-    case home = "Home"
-    case sports = "Sports"
+    case fashion = "Fashion"
+    case collectibles = "Collectibles"
     case other = "Other"
     
     var name: String { return self.rawValue }
 }
 
 enum Country: String, Codable, CaseIterable {
-    case taiwan = "Taiwan"
     case japan = "Japan"
     case korea = "Korea"
+    case taiwan = "Taiwan"
     case unitedStates = "United States"
-    case france = "France"
     
     var name: String { return self.rawValue }
 }
 
 // Supporting enum
 enum SortOption: String, CaseIterable {
-    case recent = "Most Recent"
+    case recent = "Recent"
     case priceHighToLow = "Price: High to Low"
     case priceLowToHigh = "Price: Low to High"
     case mostViewed = "Most Viewed"
@@ -45,13 +45,9 @@ enum SortOption: String, CaseIterable {
     var displayName: String { rawValue }
 }
 
-
 enum Filter: CaseIterable {
     case inStock, freeShipping, onSale
-    // Add more filters as needed
-}
-
-extension Filter {
+    
     var displayName: String {
         switch self {
         case .inStock: return "In Stock"

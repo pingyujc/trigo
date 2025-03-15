@@ -10,11 +10,16 @@ class UserCollectionsService {
     // MARK: - Listings
     func addListing(userId: String, productId: String, listingId: String) async throws {
         let userListing = UserListing(
+            id: nil,  // Let Firestore assign the ID
             productId: productId,
             listingId: listingId,
             createdAt: Date()
         )
-        try await User.listingsCollection(for: userId).addDocument(data: try userListing.asDictionary())
+        
+        var listingData = try Firestore.Encoder().encode(userListing)
+        listingData["createdAt"] = FieldValue.serverTimestamp()
+        
+        try await User.listingsCollection(for: userId).addDocument(data: listingData)
     }
     
     func removeListing(userId: String, listingId: String) async throws {
@@ -38,11 +43,16 @@ class UserCollectionsService {
     // MARK: - Requests
     func addRequest(userId: String, productId: String, requestId: String) async throws {
         let userRequest = UserRequest(
+            id: nil,  // Let Firestore assign the ID
             productId: productId,
             requestId: requestId,
             createdAt: Date()
         )
-        try await User.requestsCollection(for: userId).addDocument(data: try userRequest.asDictionary())
+        
+        var requestData = try Firestore.Encoder().encode(userRequest)
+        requestData["createdAt"] = FieldValue.serverTimestamp()
+        
+        try await User.requestsCollection(for: userId).addDocument(data: requestData)
     }
     
     func removeRequest(userId: String, requestId: String) async throws {
@@ -66,10 +76,15 @@ class UserCollectionsService {
     // MARK: - Favorites
     func addFavorite(userId: String, productId: String) async throws {
         let userFavorite = UserFavorite(
+            id: nil,  // Let Firestore assign the ID
             productId: productId,
             addedAt: Date()
         )
-        try await User.favoritesCollection(for: userId).addDocument(data: try userFavorite.asDictionary())
+        
+        var favoriteData = try Firestore.Encoder().encode(userFavorite)
+        favoriteData["addedAt"] = FieldValue.serverTimestamp()
+        
+        try await User.favoritesCollection(for: userId).addDocument(data: favoriteData)
     }
     
     func removeFavorite(userId: String, productId: String) async throws {

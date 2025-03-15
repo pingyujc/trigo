@@ -12,9 +12,6 @@ struct ProductDetailView: View {
     @StateObject private var viewModel: ProductDetailViewModel
     @EnvironmentObject private var productViewModel: ProductViewModel
     @State private var viewMode: ViewMode = .buy
-    @State private var showingPriceAlert = false
-    @State private var sellingPrice = ""
-    @State private var errorMessage: String?
     
     enum ViewMode {
         case buy, sell
@@ -47,19 +44,12 @@ struct ProductDetailView: View {
                 if viewMode == .buy {
                     BuySection(
                         product: viewModel.product,
-                        listings: viewModel.product.listings.filter { $0.isActive },
-                        onBuyTap: { listing in
-                            // Handle buy action - This would typically involve a purchase flow
-                            print("Buying listing: \(listing.id)")
-                        }
+                        listings: viewModel.product.listings.filter { $0.isActive }
                     )
                 } else {
                     SellSection(
                         product: viewModel.product,
-                        requests: viewModel.product.requests.filter { $0.isActive },
-                        onSellTap: { request in
-                            showingPriceAlert = true
-                        }
+                        requests: viewModel.product.requests.filter { $0.isActive }
                     )
                 }
                 
@@ -75,41 +65,6 @@ struct ProductDetailView: View {
         }
         .navigationTitle(viewModel.product.title)
         .navigationBarTitleDisplayMode(.inline)
-        .alert("Enter Selling Price", isPresented: $showingPriceAlert) {
-            TextField("Price", text: $sellingPrice)
-                .keyboardType(.decimalPad)
-            Button("Cancel", role: .cancel) {
-                sellingPrice = ""
-            }
-            Button("Create Listing") {
-                guard let price = Double(sellingPrice) else {
-                    errorMessage = "Please enter a valid price"
-                    return
-                }
-                Task {
-                    do {
-                        try await productViewModel.createListing(
-                            productId: viewModel.product.id,
-                            price: price,
-                            notes: nil
-                        )
-                        try await viewModel.refreshProduct()
-                        sellingPrice = ""
-                    } catch {
-                        errorMessage = error.localizedDescription
-                    }
-                }
-            }
-        }
-        .alert("Error", isPresented: .constant(errorMessage != nil)) {
-            Button("OK") {
-                errorMessage = nil
-            }
-        } message: {
-            if let errorMessage = errorMessage {
-                Text(errorMessage)
-            }
-        }
     }
 }
 
@@ -182,7 +137,6 @@ struct MarketStatsView: View {
 struct BuySection: View {
     let product: Product
     let listings: [Listing]
-    let onBuyTap: (Listing) -> Void
     
     var body: some View {
         VStack(spacing: 16) {
@@ -190,27 +144,22 @@ struct BuySection: View {
                 .font(.headline)
             
             ForEach(listings.sorted(by: { $0.price < $1.price })) { listing in
-                Button(action: { onBuyTap(listing) }) {
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text("$\(listing.price, specifier: "%.2f")")
-                                .font(.title3)
-                                .bold()
-                            Text(listing.condition.description)
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                        
-                        Spacer()
-                        
-                        Text("Buy Now")
-                            .foregroundColor(.green)
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("$\(listing.price, specifier: "%.2f")")
+                            .font(.title3)
+                            .bold()
                     }
-                    .padding()
-                    .background(Color(.systemBackground))
-                    .cornerRadius(8)
-                    .shadow(radius: 1)
+                    
+                    Spacer()
+                    
+                    Text("Buy Now")
+                        .foregroundColor(.green)
                 }
+                .padding()
+                .background(Color(.systemBackground))
+                .cornerRadius(8)
+                .shadow(radius: 1)
             }
             
             if listings.isEmpty {
@@ -219,9 +168,9 @@ struct BuySection: View {
                     .padding()
             }
             
-            // Add Create Request Button (when no listings available)
+            // Add Create Request Button
             NavigationLink(
-                destination: CreateRequestView(preSelectedProductId: product.id)
+                destination: CreateRequestView(preSelectedProductId: product.id ?? "")
             ) {
                 HStack {
                     Image(systemName: "plus.circle.fill")
@@ -234,6 +183,7 @@ struct BuySection: View {
                 .cornerRadius(8)
                 .shadow(radius: 1)
             }
+            .disabled(product.id == nil)
         }
     }
 }
@@ -241,7 +191,6 @@ struct BuySection: View {
 struct SellSection: View {
     let product: Product
     let requests: [Request]
-    let onSellTap: (Request) -> Void
     
     var body: some View {
         VStack(spacing: 16) {
@@ -249,27 +198,25 @@ struct SellSection: View {
                 .font(.headline)
             
             ForEach(requests.sorted(by: { $0.maxBudget > $1.maxBudget }), id: \.id) { request in
-                Button(action: { onSellTap(request) }) {
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text("$\(request.maxBudget, specifier: "%.2f")")
-                                .font(.title3)
-                                .bold()
-                            Text(request.notes ?? "No additional notes")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                        
-                        Spacer()
-                        
-                        Text("Sell Now")
-                            .foregroundColor(.blue)
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("$\(request.maxBudget, specifier: "%.2f")")
+                            .font(.title3)
+                            .bold()
+                        Text(request.notes ?? "No additional notes")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
                     }
-                    .padding()
-                    .background(Color(.systemBackground))
-                    .cornerRadius(8)
-                    .shadow(radius: 1)
+                    
+                    Spacer()
+                    
+                    Text("Sell Now")
+                        .foregroundColor(.blue)
                 }
+                .padding()
+                .background(Color(.systemBackground))
+                .cornerRadius(8)
+                .shadow(radius: 1)
             }
             
             if requests.isEmpty {
@@ -280,7 +227,7 @@ struct SellSection: View {
             
             // Add Create Listing Button
             NavigationLink(
-                destination: CreateListingView(preSelectedProductId: product.id)
+                destination: CreateListingView(preSelectedProductId: product.id ?? "")
             ) {
                 HStack {
                     Image(systemName: "plus.circle.fill")
@@ -293,6 +240,7 @@ struct SellSection: View {
                 .cornerRadius(8)
                 .shadow(radius: 1)
             }
+            .disabled(product.id == nil)
         }
     }
 }

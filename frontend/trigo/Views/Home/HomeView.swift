@@ -89,7 +89,13 @@ struct HomeView: View {
             }
             .refreshable {
                 // Pull to refresh
-                await viewModel.fetchProducts()
+                do {
+                    try await viewModel.fetchProducts()
+                    print("Products refreshed successfully")
+                } catch {
+                    print("Error refreshing products: \(error)")
+                    viewModel.error = error
+                }
             }
             // Show loading indicator
             .overlay {

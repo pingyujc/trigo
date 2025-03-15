@@ -155,12 +155,12 @@ class AuthService: ObservableObject {
             throw AuthError.userCreationFailed
         }
         
-        // Create a dictionary without the id field
-        var userData: [String: Any] = [
-            "name": user.name,
-            "email": user.email,
-            "username": user.username
-        ]
+        // Create a copy of the user without an ID
+        var newUser = user
+        newUser.id = nil  // Clear the ID so Firestore doesn't try to encode it
+        
+        // Encode the user using Firestore.Encoder
+        let userData = try Firestore.Encoder().encode(newUser)
         
         // Set the document with explicit ID
         try await db.collection("users")

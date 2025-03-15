@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseFirestore
 // identifiable makes it able to use ID
 // codable is for fireBase and api in the future
 
@@ -15,37 +16,67 @@ enum ProductType: String, Codable {
 }
 
 struct Product: Identifiable, Codable {
-    let id: String
-    let title: String
-    let description: String
-    let category: Category
-    let country: Country
+    @DocumentID var id: String?
+    var title: String
+    var description: String
+    var category: Category
+    var country: Country
     var image: String
     
     // Statistics
     var viewCount: Int
     var favoriteCount: Int
+    var lowestListingPrice: Double?
+    var highestRequestPrice: Double?
     
     // Market Data
     var listings: [Listing]
     var requests: [Request]
     
-    var lowestListingPrice: Double? {
-        listings.filter { $0.isActive }.map { $0.price }.min()
+    // Computed properties for local use
+    var currentLowestListingPrice: Double? {
+        listings.filter { $0.isActive }.min { $0.price < $1.price }?.price
     }
     
-    var highestRequestPrice: Double? {
-        requests.filter { $0.isActive }.map { $0.maxBudget }.max()
+    var currentHighestRequestPrice: Double? {
+        requests.filter { $0.isActive }.max { $0.maxBudget < $1.maxBudget }?.maxBudget
     }
     
+    // Regular init
+    init(
+        id: String? = nil,
+        title: String,
+        description: String,
+        category: Category,
+        country: Country,
+        image: String,
+        viewCount: Int = 0,
+        favoriteCount: Int = 0,
+        lowestListingPrice: Double? = nil,
+        highestRequestPrice: Double? = nil,
+        listings: [Listing] = [],
+        requests: [Request] = []
+    ) {
+        self.id = id
+        self.title = title
+        self.description = description
+        self.category = category
+        self.country = country
+        self.image = image
+        self.viewCount = viewCount
+        self.favoriteCount = favoriteCount
+        self.lowestListingPrice = lowestListingPrice
+        self.highestRequestPrice = highestRequestPrice
+        self.listings = listings
+        self.requests = requests
+    }
 }
 
 struct Listing: Identifiable, Codable {
-    let id: String
+    @DocumentID var id: String?
     let productId: String
     let sellerId: String
     let price: Double
-    let condition: ItemCondition
     let createdAt: Date
     var isActive: Bool
     
@@ -54,7 +85,7 @@ struct Listing: Identifiable, Codable {
 }
 
 struct Request: Identifiable, Codable {
-    let id: String
+    @DocumentID var id: String?
     let productId: String
     let buyerId: String
     let maxBudget: Double
@@ -63,43 +94,23 @@ struct Request: Identifiable, Codable {
     
     // Additional details
     var notes: String?
-//    var urgencyLevel: UrgencyLevel
-}
-
-enum ItemCondition: String, Codable, CaseIterable {
-    case new = "New"
-    case likeNew = "Like New"
-    case good = "Good"
-    case fair = "Fair"
-    
-    var description: String {
-        rawValue
-    }
 }
 
 // Add preview data helper
 extension Product {
     static var sampleListing: Product {
         Product(
-            id: "sample-listing-1",
-            title: "Sample Listing",
-            description: "This is a sample product listing",
+            id: "1",
+            title: "Sample Product",
+            description: "This is a sample product description",
             category: .electronics,
-            country: .unitedStates,
-            image: "porche911",
+            country: .japan,
+            image: "sample-image",
             viewCount: 100,
-            favoriteCount: 25,
-            listings: [
-                Listing(
-                    id: "listing-1",
-                    productId: "sample-listing-1",
-                    sellerId: "seller-123",
-                    price: 199.99,
-                    condition: .new,
-                    createdAt: Date(),
-                    isActive: true
-                )
-            ],
+            favoriteCount: 50,
+            lowestListingPrice: nil,
+            highestRequestPrice: nil,
+            listings: [],
             requests: []
         )
     }
@@ -114,6 +125,8 @@ extension Product {
             image: "camera-image",
             viewCount: 50,
             favoriteCount: 10,
+            lowestListingPrice: nil,
+            highestRequestPrice: 150.00,
             listings: [],
             requests: [
                 Request(
