@@ -18,82 +18,52 @@ struct HomeView: View {
     
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack(spacing: 24) {
-                    // Search Bar
-                    HStack {
-                        Image(systemName: "magnifyingglass")
-                            .foregroundColor(.gray)
-                        TextField("What are you looking for?", text: $searchText)
-                    }
-                    .padding()
-                    .background(Color(.systemGray6).opacity(0.8))
-                    .cornerRadius(12)
-                    .padding(.horizontal)
-                    
-                    // Country filter
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 12) {
-                            ForEach(Country.allCases, id: \.self) { country in
-                                CountryButton(
-                                    country: country,
-                                    isSelected: selectedCountry == country,
-                                    action: {
-                                        selectedCountry = country
-                                        Task {
-                                            await viewModel.applyFilters(country: country)
-                                        }
-                                    }
-                                )
-                            }
-                        }
-                        .padding(.horizontal)
-                    }
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 0) {
+                    // Featured Product - similar to Prada sunglasses in reference
+                    featuredProductView
                     
                     // Content Sections
-                    VStack(spacing: 32) {
-                        // Trending Listings Section
-                        VStack(alignment: .leading, spacing: 16) {
-                            Text("Trending Listings")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .padding(.horizontal)
-                            
-                            SectionView(title: "Trending Listings", products: viewModel.products)
-                        }
+                    VStack(spacing: 0) {
+                        // Just Dropped Section
+                        CategorySectionView(title: "Just Dropped")
+                        SectionView(title: "Top Picks", products: viewModel.products)
                         
-                        // Trending Requests Section
-                        VStack(alignment: .leading, spacing: 16) {
-                            Text("Trending Requests")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .padding(.horizontal)
-                            
-                            SectionView(title: "Trending Requests", products: viewModel.products)
-                        }
+                        Divider()
+                            .padding(.vertical, 24)
+                        
+                        // Categories Grid
+                        shopByCategoryView
                     }
-                    .padding()
                 }
+                .background(Color.white)
             }
-            .navigationTitle("Welcome to home page")
-            .navigationBarTitleDisplayMode(.large)
+            .ignoresSafeArea(edges: .top)
+            .overlay(
+                // Logo Header like in reference image
+                VStack {
+                    Text("TRIGO")
+                        .font(.system(size: 28, weight: .bold))
+                        .tracking(2)
+                        .padding(.top, 50)
+                        .padding(.bottom, 12)
+                        .frame(maxWidth: .infinity)
+                        .background(Color.white)
+                    
+                    Spacer()
+                }
+                .edgesIgnoringSafeArea(.top)
+                , alignment: .top
+            )
             .task {
                 // Setup and initial fetch when view appears
                 await viewModel.setup()
-            }
-            .onChange(of: selectedCountry) { oldCountry, newCountry in
-                // Handle country filter changes
-                Task {
-                    await viewModel.applyFilters(country: newCountry)
-                }
             }
             .refreshable {
                 // Pull to refresh
                 do {
                     try await viewModel.fetchProducts()
-                    print("Products refreshed successfully")
                 } catch {
-                    print("Error refreshing products: \(error)")
                     viewModel.error = error
                 }
             }
@@ -112,6 +82,103 @@ struct HomeView: View {
                 Text(viewModel.error?.localizedDescription ?? "Unknown error")
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
+    }
+    
+    // Featured Product View - like the Prada sunglasses in reference
+    private var featuredProductView: some View {
+        ZStack(alignment: .bottomLeading) {
+            // Use a placeholder image or first product image
+            if let featuredProduct = viewModel.products.first {
+                Image(featuredProduct.image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 400)
+                    .clipped()
+            } else {
+                Rectangle()
+                    .fill(Color.gray.opacity(0.2))
+                    .frame(height: 400)
+            }
+            
+            // Product info overlay
+            VStack(alignment: .leading, spacing: 4) {
+                if let featuredProduct = viewModel.products.first {
+                    Text(featuredProduct.category.rawValue)
+                        .font(.system(size: 16))
+                        .bold()
+                    
+                    Text(featuredProduct.title)
+                        .font(.system(size: 26, weight: .bold))
+                    
+                    if let price = featuredProduct.lowestListingPrice {
+                        Text("$\(Int(price))")
+                            .font(.system(size: 20, weight: .bold))
+                            .padding(.top, 4)
+                    }
+                } else {
+                    Text("Featured Product")
+                        .font(.system(size: 26, weight: .bold))
+                    
+                    Text("$390")
+                        .font(.system(size: 20, weight: .bold))
+                }
+            }
+            .padding(24)
+            .foregroundColor(.white)
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [Color.black.opacity(0.7), Color.black.opacity(0)]),
+                    startPoint: .bottom,
+                    endPoint: .top
+                )
+            )
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(.bottom, 32)
+    }
+    
+    // Category Grid - like the SHOES, ELECTRONICS etc. in reference
+    private var shopByCategoryView: some View {
+        VStack(spacing: 0) {
+            Text("SHOP BY CATEGORY")
+                .font(.system(size: 14, weight: .medium))
+                .foregroundColor(.gray)
+                .tracking(1.5)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.horizontal)
+                .padding(.bottom, 24)
+                .overlay(
+                    Rectangle()
+                        .frame(height: 1)
+                        .foregroundColor(.gray.opacity(0.3))
+                        .padding(.horizontal, 20)
+                )
+            
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
+                categoryCell(title: "SHOES", image: "shoes")
+                categoryCell(title: "ELECTRONICS", image: "electronics")
+                categoryCell(title: "APPAREL", image: "apparel")
+                categoryCell(title: "BEAUTY", image: "beauty")
+            }
+            .padding(.horizontal)
+            .padding(.bottom, 32)
+        }
+    }
+    
+    private func categoryCell(title: String, image: String) -> some View {
+        VStack {
+            Image(image)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(height: 120)
+                .clipShape(Rectangle())
+            
+            Text(title)
+                .font(.system(size: 12, weight: .medium))
+                .padding(.vertical, 8)
+        }
+        .background(Color.white)
     }
 }
 

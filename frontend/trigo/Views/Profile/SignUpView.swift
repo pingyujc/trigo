@@ -11,130 +11,166 @@ import SwiftUI
 struct SignUpView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject private var authService = AuthService.shared
+    
     @State private var name = ""
-    @State private var email = ""
     @State private var username = ""
+    @State private var email = ""
     @State private var password = ""
     @State private var confirmPassword = ""
     @State private var errorMessage = ""
     @State private var isLoading = false
-
+    
     var body: some View {
-        VStack(spacing: 20) {
-            Text("Sign Up")
-                .font(.largeTitle)
-                .padding()
-
-            TextField("Name", text: $name)
-                .padding()
-                .background(Color(.secondarySystemBackground))
-                .cornerRadius(10)
-
-            TextField("Username", text: $username)
-                .autocapitalization(.none)
-                .padding()
-                .background(Color(.secondarySystemBackground))
-                .cornerRadius(10)
-
-            TextField("Email", text: $email)
-                .autocapitalization(.none)
-                .keyboardType(.emailAddress)
-                .padding()
-                .background(Color(.secondarySystemBackground))
-                .cornerRadius(10)
-
-            SecureField("Password", text: $password)
-                .padding()
-                .background(Color(.secondarySystemBackground))
-                .cornerRadius(10)
-
-            SecureField("Confirm Password", text: $confirmPassword)
-                .padding()
-                .background(Color(.secondarySystemBackground))
-                .cornerRadius(10)
-
-            Button(action: emailSignUp) {
-                if isLoading {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                } else {
-                    Text("Sign Up")
-                        .frame(maxWidth: .infinity)
+        ScrollView {
+            VStack(spacing: 24) {
+                // Header
+                Text("TRIGO")
+                    .font(.system(size: 28, weight: .bold))
+                    .tracking(2)
+                    .padding(.top, 40)
+                
+                Text("CREATE ACCOUNT")
+                    .font(.system(size: 20, weight: .bold))
+                    .padding(.top, 8)
+                    .padding(.bottom, 32)
+                
+                // Name field
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Full Name")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(.gray)
+                    
+                    TextField("Enter your name", text: $name)
+                        .font(.system(size: 16))
+                        .padding()
+                        .background(Color.customBackgroundSecondary)
+                        .cornerRadius(8)
                 }
-            }
-            .foregroundColor(.white)
-            .padding()
-            .background(Color.green)
-            .cornerRadius(10)
-            .disabled(isLoading)
-
-            Text("OR")
-                .foregroundColor(.gray)
-
-            Button(action: googleSignUp) {
-                HStack {
-                    Image(systemName: "g.circle.fill")
-                        .foregroundColor(.red)
-                    Text("Continue with Google")
+                // Username field
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("UserName")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(.gray)
+                    
+                    TextField("Enter your Username", text: $username)
+                        .font(.system(size: 16))
+                        .padding()
+                        .background(Color.customBackgroundSecondary)
+                        .cornerRadius(8)
                 }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color(.systemBackground))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                )
+                
+                // Email field
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Email")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(.gray)
+                    
+                    TextField("Enter your email", text: $email)
+                        .font(.system(size: 16))
+                        .autocapitalization(.none)
+                        .keyboardType(.emailAddress)
+                        .padding()
+                        .background(Color.customBackgroundSecondary)
+                        .cornerRadius(8)
+                }
+                
+                // Password field
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Password")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(.gray)
+                    
+                    SecureField("Create password", text: $password)
+                        .font(.system(size: 16))
+                        .padding()
+                        .background(Color.customBackgroundSecondary)
+                        .cornerRadius(8)
+                }
+                
+                // Confirm Password field
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Confirm Password")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(.gray)
+                    
+                    SecureField("Confirm password", text: $confirmPassword)
+                        .font(.system(size: 16))
+                        .padding()
+                        .background(Color.customBackgroundSecondary)
+                        .cornerRadius(8)
+                }
+                
+                // Error message
+                if !errorMessage.isEmpty {
+                    Text(errorMessage)
+                        .font(.system(size: 14))
+                        .foregroundColor(.secondaryAccent)
+                        .padding(.top, 8)
+                }
+                
+                // Sign Up Button
+                Button(action: signUp) {
+                    HStack {
+                        if isLoading {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        } else {
+                            Text("Create Account")
+                                .font(.system(size: 16, weight: .bold))
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                }
+                .foregroundColor(.white)
+                .background(Color.black)
+                .cornerRadius(30)
+                .disabled(isLoading)
+                .padding(.top, 16)
+                
+                // Already have account link
+                Button(action: {
+                    dismiss()
+                }) {
+                    Text("Already have an account? Log In")
+                        .font(.system(size: 16))
+                        .underline()
+                        .foregroundColor(.black)
+                }
+                .padding(.top, 24)
+                .padding(.bottom, 40)
             }
-            .disabled(isLoading)
-
-            if !errorMessage.isEmpty {
-                Text(errorMessage)
-                    .foregroundColor(.red)
-                    .padding()
-            }
+            .padding(.horizontal, 24)
         }
-        .padding()
+        .background(Color.white)
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: Button(action: {
+            dismiss()
+        }) {
+            Image(systemName: "chevron.left")
+                .foregroundColor(.black)
+            Text("Back")
+                .foregroundColor(.black)
+        })
     }
-
-    func emailSignUp() {
-        // Validate input
-        guard !name.isEmpty && !email.isEmpty && !username.isEmpty && !password.isEmpty else {
+    
+    func signUp() {
+        // Validate inputs
+        guard !name.isEmpty, !email.isEmpty, !password.isEmpty else {
             errorMessage = "Please fill in all fields"
             return
         }
-
+        
         guard password == confirmPassword else {
             errorMessage = "Passwords do not match"
             return
         }
-
-        guard password.count >= Constants.Validation.minPasswordLength else {
-            errorMessage = "Password must be at least \(Constants.Validation.minPasswordLength) characters"
-            return
-        }
-
+        
         isLoading = true
         Task {
             do {
-                _ = try await authService.signUp(
-                    email: email,
-                    password: password,
-                    name: name,
-                    username: username
-                )
-                dismiss()
-            } catch {
-                errorMessage = error.localizedDescription
-            }
-            isLoading = false
-        }
-    }
-
-    func googleSignUp() {
-        isLoading = true
-        Task {
-            do {
-                _ = try await authService.signInWithGoogle()
+                _ = try await authService.signUp(email: email, password: password, name: name, username: username)
+                
                 dismiss()
             } catch {
                 errorMessage = error.localizedDescription

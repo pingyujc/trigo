@@ -10,58 +10,63 @@ struct SearchView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
+                // Header
+                Text("BROWSE")
+                    .font(.system(size: 28, weight: .bold))
+                    .tracking(2)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.top, 16)
+                    .padding(.bottom, 16)
+                
                 // Search Bar
                 SearchBar(text: $searchText)
-                    .padding()
-                    .background(Color(.systemBackground))
+                    .padding(.horizontal)
+                    .padding(.bottom, 16)
                 
-                // Filters
+                // Category Pills - Horizontal scroll of categories
                 ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 8) {
-                        // Sort Button
-                        Menu {
-                            ForEach(SortOption.allCases, id: \.self) { option in
-                                Button(action: { sortOption = option }) {
-                                    Text(option.displayName)
+                    HStack(spacing: 24) {
+                        Text("MAINS")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.gray)
+                        
+                        Text("BROWSE")
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundColor(.black)
+                        
+                        Text("AIR MAX")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.gray)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 32)
+                }
+                
+                // Just Dropped Section
+                VStack(alignment: .leading) {
+                    CategorySectionView(title: "Just Dropped")
+                        .padding(.bottom, 16)
+                    
+                    // Grid of results
+                    if searchResults.isEmpty {
+                        EmptyStateView()
+                            .frame(maxWidth: .infinity)
+                            .padding(.top, 32)
+                    } else {
+                        ScrollView {
+                            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
+                                ForEach(searchResults) { item in
+                                    SearchResultItem(item: item)
                                 }
                             }
-                        } label: {
-                            Label(sortOption.displayName, systemImage: "arrow.up.arrow.down")
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 6)
-                                .background(Color.secondary.opacity(0.1))
-                                .cornerRadius(8)
-                        }
-                        
-                        // Filter Chips
-                        ForEach(Filter.allCases, id: \.self) { filter in
-                            FilterChip(
-                                filter: filter,
-                                isSelected: selectedFilters.contains(filter),
-                                action: { toggleFilter(filter) }
-                            )
+                            .padding(.horizontal)
                         }
                     }
-                    .padding(.horizontal)
                 }
                 
-                // Search Results
-                if searchResults.isEmpty {
-                    Spacer()
-                    EmptyStateView()
-                    Spacer()
-                } else {
-                    ScrollView {
-                        LazyVStack(spacing: 16) {
-                            ForEach(searchResults) { item in
-                                SearchResultRow(item: item)
-                            }
-                        }
-                        .padding()
-                    }
-                }
+                Spacer()
             }
-            .navigationTitle("Search")
+            .background(Color.white)
         }
 //        .onChange(of: searchText) { _ in
 //            performSearch()
@@ -91,7 +96,8 @@ struct SearchBar: View {
             Image(systemName: "magnifyingglass")
                 .foregroundColor(.gray)
             
-            TextField("Search items...", text: $text)
+            TextField("Search", text: $text)
+                .font(.system(size: 16))
                 .autocapitalization(.none)
             
             if !text.isEmpty {
@@ -101,9 +107,9 @@ struct SearchBar: View {
                 }
             }
         }
-        .padding(8)
-        .background(Color.secondary.opacity(0.1))
-        .cornerRadius(10)
+        .padding(12)
+        .background(Color.customGray)
+        .cornerRadius(8)
     }
 }
 
@@ -113,67 +119,59 @@ struct SearchView_Previews: PreviewProvider {
     }
 }
 
-struct FilterChip: View {
-    let filter: Filter
-    let isSelected: Bool
-    let action: () -> Void
-    
-    var body: some View {
-        Button(action: action) {
-            Text(filter.displayName)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .background(isSelected ? Color.blue : Color.secondary.opacity(0.1))
-                .foregroundColor(isSelected ? .white : .primary)
-                .cornerRadius(8)
-        }
-    }
-}
-
 struct EmptyStateView: View {
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 24) {
             Image(systemName: "magnifyingglass")
-                .font(.system(size: 64))
-                .foregroundColor(.gray)
+                .font(.system(size: 48))
+                .foregroundColor(.gray.opacity(0.6))
+            
             Text("No results found")
-                .font(.headline)
-            Text("Try adjusting your search or filters")
-                .font(.subheadline)
+                .font(.system(size: 18, weight: .medium))
+                .foregroundColor(.black)
+            
+            Text("Try adjusting your search criteria")
+                .font(.system(size: 16))
                 .foregroundColor(.gray)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 32)
         }
         .padding()
     }
 }
 
-struct SearchResultRow: View {
+struct SearchResultItem: View {
     let item: Item
     
     var body: some View {
-        HStack(spacing: 12) {
+        VStack(alignment: .leading, spacing: 8) {
+            // Image
             AsyncImage(url: item.imageURL) { image in
                 image.resizable()
                     .aspectRatio(contentMode: .fill)
             } placeholder: {
                 Color.gray.opacity(0.2)
             }
-            .frame(width: 60, height: 60)
-            .cornerRadius(8)
+            .frame(height: 160)
+            .clipShape(RoundedRectangle(cornerRadius: 8))
             
-            VStack(alignment: .leading, spacing: 4) {
-                Text(item.title)
-                    .font(.headline)
-                Text("$\(item.price, specifier: "%.2f")")
-                    .font(.subheadline)
-                    .foregroundColor(.blue)
-            }
-            
-            Spacer()
-            
-            Image(systemName: "chevron.right")
+            // Year
+            Text("2025")
+                .font(.system(size: 12, weight: .medium))
                 .foregroundColor(.gray)
+                .padding(.top, 4)
+            
+            // Product Name
+            Text(item.title)
+                .font(.system(size: 14, weight: .medium))
+                .lineLimit(2)
+                .foregroundColor(.black)
+            
+            // Price
+            Text("$\(Int(item.price))")
+                .font(.system(size: 14, weight: .bold))
+                .foregroundColor(.priceColor)
         }
-        .padding(.vertical, 8)
     }
 }
 

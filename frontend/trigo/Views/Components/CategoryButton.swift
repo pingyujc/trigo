@@ -17,11 +17,16 @@ struct CategoryButton: View {
     var body: some View {
         Button(action: action) {
             Text(category.name)
+                .font(.system(size: 14, weight: isSelected ? .bold : .medium))
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
-                .background(isSelected ? Color.blue : Color.gray.opacity(0.1))
-                .foregroundColor(isSelected ? .white : .primary)
+                .foregroundColor(isSelected ? .white : .black)
+                .background(isSelected ? Color.black : Color.white)
                 .cornerRadius(20)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(isSelected ? Color.clear : Color.gray.opacity(0.3), lineWidth: 1)
+                )
         }
     }
 }

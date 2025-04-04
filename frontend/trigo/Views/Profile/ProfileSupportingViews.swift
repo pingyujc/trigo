@@ -4,13 +4,33 @@ struct ProfileHeader: View {
     let user: User
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(user.name)
-                .font(.title)
-            Text(user.email)
-                .foregroundColor(.gray)
+        HStack(spacing: 16) {
+            // Profile Image
+            Image(systemName: "person.crop.circle.fill")
+                .font(.system(size: 64))
+                .foregroundColor(.black)
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text(user.name)
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(.black)
+                
+                Text(user.email)
+                    .font(.system(size: 14))
+                    .foregroundColor(.gray)
+                
+                // Member since
+                Text("Member since 2024")
+                    .font(.system(size: 12))
+                    .foregroundColor(.gray)
+                    .padding(.top, 4)
+            }
+            
+            Spacer()
         }
-        .padding()
+        .padding(16)
+        .background(Color.customBackgroundSecondary)
+        .cornerRadius(12)
     }
 }
 

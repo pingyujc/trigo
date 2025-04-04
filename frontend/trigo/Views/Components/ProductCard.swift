@@ -12,46 +12,39 @@ struct ProductCard: View {
     let product: Product
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 8) {
             // Image
             Image(product.image)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(width: 200, height: 200)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .frame(width: 160, height: 160)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
             
-            // Product Info
-            VStack(alignment: .leading, spacing: 8) {
-                Text(product.title)
-                    .font(.headline)
-                    .lineLimit(2)
-                    .foregroundColor(.primary)
-                
-                if let price = product.lowestListingPrice {
-                    Text("$\(price, specifier: "%.2f")")
-                        .font(.subheadline)
-                        .foregroundColor(.green)
-                } else if let highestBid = product.highestRequestPrice {
-                    Text("Highest Bid: $\(highestBid, specifier: "%.2f")")
-                        .font(.subheadline)
-                        .foregroundColor(.blue)
-                }
-                
-                HStack {
-                    Label("\(product.viewCount)", systemImage: "eye")
-                    Spacer()
-                    Label("\(product.favoriteCount)", systemImage: "heart")
-                }
-                .font(.caption)
+            // Year or category label (inspired by the reference image)
+            Text("2025")
+                .font(.system(size: 12, weight: .medium))
                 .foregroundColor(.gray)
+                .padding(.top, 4)
+            
+            // Product Title - cleaner with truncation
+            Text(product.title)
+                .font(.system(size: 14, weight: .medium))
+                .lineLimit(2)
+                .foregroundColor(.black)
+            
+            // Price information
+            if let price = product.lowestListingPrice {
+                Text("$\(Int(price))")
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundColor(.priceColor)
+            } else if let highestBid = product.highestRequestPrice {
+                Text("$\(Int(highestBid))")
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundColor(.bidColor)
             }
-            .padding(.horizontal, 8)
-            .padding(.vertical, 8)
         }
-        .frame(width: 200)
-        .background(Color.customBackground)
-        .cornerRadius(12)
-        .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+        .frame(width: 160)
+        .padding(.bottom, 12)
     }
 } 
 

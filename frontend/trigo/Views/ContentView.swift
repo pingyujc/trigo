@@ -15,19 +15,19 @@ struct ContentView: View {
             HomeView()
                 .environmentObject(productViewModel)
                 .tabItem {
-                    Label("Home", systemImage: "house")
+                    Label("HOME", systemImage: "house")
                 }
             
             SearchView()
                 .environmentObject(productViewModel)
                 .tabItem {
-                    Label("Search", systemImage: "magnifyingglass")
+                    Label("SEARCH", systemImage: "magnifyingglass")
                 }
             
             CreateOptionsView()
                 .environmentObject(productViewModel)
                 .tabItem {
-                    Label("Create", systemImage: "plus.circle.fill")
+                    Label("CREATE", systemImage: "plus.circle.fill")
                 }
             
 //            FavoriteView()
@@ -39,14 +39,44 @@ struct ContentView: View {
             OrderView()
                 .environmentObject(productViewModel)
                 .tabItem {
-                    Label("Order", systemImage: "clock.arrow.circlepath")
+                    Label("ORDERS", systemImage: "clock.arrow.circlepath")
                 }
             
             ProfileView()
                 .environmentObject(productViewModel)
                 .tabItem {
-                    Label("Profile", systemImage: "person")
+                    Label("PROFILE", systemImage: "person")
                 }
+        }
+        .onAppear {
+            // Style the tab bar to match the reference design
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = UIColor.black
+            
+            // Style the tab bar items
+            let itemAppearance = UITabBarItemAppearance()
+            
+            // Normal state
+            itemAppearance.normal.iconColor = UIColor.lightGray
+            itemAppearance.normal.titleTextAttributes = [
+                .foregroundColor: UIColor.lightGray, 
+                .font: UIFont.systemFont(ofSize: 10, weight: .medium)
+            ]
+            
+            // Selected state
+            itemAppearance.selected.iconColor = UIColor.white
+            itemAppearance.selected.titleTextAttributes = [
+                .foregroundColor: UIColor.white,
+                .font: UIFont.systemFont(ofSize: 10, weight: .medium)
+            ]
+            
+            appearance.stackedLayoutAppearance = itemAppearance
+            appearance.inlineLayoutAppearance = itemAppearance
+            appearance.compactInlineLayoutAppearance = itemAppearance
+            
+            UITabBar.appearance().standardAppearance = appearance
+            UITabBar.appearance().scrollEdgeAppearance = appearance
         }
     }
 }

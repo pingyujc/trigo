@@ -30,107 +30,119 @@ struct ProductDetailView: View {
     
     var body: some View {
         ScrollView {
-            VStack(spacing: 20) {
-                // Product Header
-                ProductHeaderView(product: viewModel.product)
+            VStack(spacing: 0) {
+                // Product Header - full width image
+                Image(viewModel.product.image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 350)
+                    .clipped()
                 
-                // Market Stats
-                MarketStatsView(
-                    lowestAsk: viewModel.product.lowestListingPrice ?? 0,
-                    highestBid: viewModel.product.highestRequestPrice ?? 0
-                )
-                
-                // Main Action Section
-                if viewMode == .buy {
-                    BuySection(
-                        product: viewModel.product,
-                        listings: viewModel.product.listings.filter { $0.isActive }
-                    )
-                } else {
-                    SellSection(
-                        product: viewModel.product,
-                        requests: viewModel.product.requests.filter { $0.isActive }
-                    )
+                // Product Info
+                VStack(alignment: .leading, spacing: 24) {
+                    // Year/season marker
+                    Text("2025")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(.gray)
+                        .padding(.top, 16)
+                    
+                    // Product Title
+                    Text(viewModel.product.title)
+                        .font(.system(size: 24, weight: .bold))
+                        .foregroundColor(.black)
+                    
+                    // Price
+                    if let price = viewModel.product.lowestListingPrice {
+                        Text("$\(Int(price))")
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundColor(.priceColor)
+                    }
+                    
+                    // Description
+                    Text(viewModel.product.description)
+                        .font(.system(size: 16))
+                        .foregroundColor(.gray)
+                        .padding(.top, 8)
+                    
+                    // Category and country info
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text("CATEGORY")
+                                .font(.system(size: 12, weight: .medium))
+                                .foregroundColor(.gray)
+                            Text(viewModel.product.category.rawValue)
+                                .font(.system(size: 14, weight: .medium))
+                        }
+                        
+                        Spacer()
+                        
+                        VStack(alignment: .trailing) {
+                            Text("ORIGIN")
+                                .font(.system(size: 12, weight: .medium))
+                                .foregroundColor(.gray)
+                            Text(viewModel.product.country.rawValue)
+                                .font(.system(size: 14, weight: .medium))
+                        }
+                    }
+                    .padding(.vertical, 16)
+                    
+                    Divider()
+                        .padding(.vertical, 8)
+                    
+                    // Buy/Sell Tabs
+                    HStack(spacing: 0) {
+                        tabButton(title: "Buy", isSelected: viewMode == .buy) {
+                            viewMode = .buy
+                        }
+                        
+                        tabButton(title: "Sell", isSelected: viewMode == .sell) {
+                            viewMode = .sell
+                        }
+                    }
+                    .padding(.vertical, 8)
+                    
+                    // Main Action Section
+                    if viewMode == .buy {
+                        BuySection(
+                            product: viewModel.product,
+                            listings: viewModel.product.listings.filter { $0.isActive }
+                        )
+                    } else {
+                        SellSection(
+                            product: viewModel.product,
+                            requests: viewModel.product.requests.filter { $0.isActive }
+                        )
+                    }
                 }
-                
-                // Mode Switch Button
-                Button(action: { viewMode = viewMode == .buy ? .sell : .buy }) {
-                    Text(viewMode == .buy ? "Sell This Item Instead" : "Buy This Item Instead")
-                        .font(.subheadline)
-                        .foregroundColor(.blue)
-                }
-                .padding(.top)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 32)
             }
-            .padding()
         }
-        .navigationTitle(viewModel.product.title)
+        .edgesIgnoringSafeArea(.top)
         .navigationBarTitleDisplayMode(.inline)
     }
-}
-
-struct ProductHeaderView: View {
-    let product: Product
     
-    var body: some View {
-        VStack(spacing: 12) {
-            // will switch to this when using firebase
-//            AsyncImage(url: URL(string: product.image)) { image in
-//                image.resizable().aspectRatio(contentMode: .fit)
-//            } placeholder: {
-//                Rectangle().fill(Color.gray.opacity(0.2))
-//            }
-//            .frame(height: 200)
-            
-            // use local storage for now
-            Image(product.image)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(height: 150)
-                .clipped()
-            Text(product.title)
-                .font(.headline)
-            
-            HStack {
-                Label(product.category.rawValue, systemImage: "tag")
-                Spacer()
-                Label(product.country.rawValue, systemImage: "globe")
-            }
-            .font(.caption)
-            .foregroundColor(.secondary)
-        }
-    }
-}
-
-struct MarketStatsView: View {
-    let lowestAsk: Double
-    let highestBid: Double
-    
-    var body: some View {
-        HStack(spacing: 20) {
-            VStack {
-                Text("Lowest Ask")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                Text("$\(lowestAsk, specifier: "%.2f")")
-                    .font(.headline)
-                    .foregroundColor(.green)
-            }
-            
-            Divider()
-            
-            VStack {
-                Text("Highest Bid")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                Text("$\(highestBid, specifier: "%.2f")")
-                    .font(.headline)
-                    .foregroundColor(.blue)
+    private func tabButton(title: String, isSelected: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            VStack(spacing: 8) {
+                Text(title)
+                    .font(.system(size: 16, weight: isSelected ? .bold : .medium))
+                    .foregroundColor(isSelected ? .black : .gray)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                
+                if isSelected {
+                    Rectangle()
+                        .frame(height: 2)
+                        .foregroundColor(.black)
+                } else {
+                    Rectangle()
+                        .frame(height: 2)
+                        .foregroundColor(.clear)
+                }
             }
         }
-        .padding()
-        .background(Color(.systemBackground))
-        .cornerRadius(10)
-        .shadow(radius: 1)
+        .frame(maxWidth: .infinity)
     }
 }
 
@@ -140,26 +152,29 @@ struct BuySection: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            Text("Available Listings")
-                .font(.headline)
-            
             ForEach(listings.sorted(by: { $0.price < $1.price })) { listing in
                 HStack {
                     VStack(alignment: .leading) {
-                        Text("$\(listing.price, specifier: "%.2f")")
-                            .font(.title3)
-                            .bold()
+                        Text("$\(Int(listing.price))")
+                            .font(.system(size: 18, weight: .bold))
+                            .foregroundColor(.black)
                     }
                     
                     Spacer()
                     
-                    Text("Buy Now")
-                        .foregroundColor(.green)
+                    Button(action: {}) {
+                        Text("Buy")
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 10)
+                            .background(Color.black)
+                            .cornerRadius(20)
+                    }
                 }
                 .padding()
-                .background(Color(.systemBackground))
+                .background(Color.customBackgroundSecondary)
                 .cornerRadius(8)
-                .shadow(radius: 1)
             }
             
             if listings.isEmpty {
@@ -168,23 +183,22 @@ struct BuySection: View {
                     .padding()
             }
             
-            // Add Create Request Button
+            // Create Request Button
             NavigationLink(
                 destination: CreateRequestView(preSelectedProductId: product.id ?? "")
             ) {
-                HStack {
-                    Image(systemName: "plus.circle.fill")
-                    Text("Bid")
-                }
-                .foregroundColor(.green)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color(.systemBackground))
-                .cornerRadius(8)
-                .shadow(radius: 1)
+                Text("Place Bid")
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(Color.bidColor)
+                    .cornerRadius(30)
             }
             .disabled(product.id == nil)
+            .padding(.top, 16)
         }
+        .padding(.top, 16)
     }
 }
 
@@ -194,29 +208,36 @@ struct SellSection: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            Text("Active Requests")
-                .font(.headline)
-            
             ForEach(requests.sorted(by: { $0.maxBudget > $1.maxBudget }), id: \.id) { request in
                 HStack {
-                    VStack(alignment: .leading) {
-                        Text("$\(request.maxBudget, specifier: "%.2f")")
-                            .font(.title3)
-                            .bold()
-                        Text(request.notes ?? "No additional notes")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("$\(Int(request.maxBudget))")
+                            .font(.system(size: 18, weight: .bold))
+                            .foregroundColor(.black)
+                        
+                        if let notes = request.notes, !notes.isEmpty {
+                            Text(notes)
+                                .font(.system(size: 14))
+                                .foregroundColor(.gray)
+                                .lineLimit(1)
+                        }
                     }
                     
                     Spacer()
                     
-                    Text("Sell Now")
-                        .foregroundColor(.blue)
+                    Button(action: {}) {
+                        Text("Sell")
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 10)
+                            .background(Color.black)
+                            .cornerRadius(20)
+                    }
                 }
                 .padding()
-                .background(Color(.systemBackground))
+                .background(Color.customBackgroundSecondary)
                 .cornerRadius(8)
-                .shadow(radius: 1)
             }
             
             if requests.isEmpty {
@@ -225,23 +246,22 @@ struct SellSection: View {
                     .padding()
             }
             
-            // Add Create Listing Button
+            // Create Listing Button
             NavigationLink(
                 destination: CreateListingView(preSelectedProductId: product.id ?? "")
             ) {
-                HStack {
-                    Image(systemName: "plus.circle.fill")
-                    Text("Ask")
-                }
-                .foregroundColor(.blue)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color(.systemBackground))
-                .cornerRadius(8)
-                .shadow(radius: 1)
+                Text("Create Listing")
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(Color.black)
+                    .cornerRadius(30)
             }
             .disabled(product.id == nil)
+            .padding(.top, 16)
         }
+        .padding(.top, 16)
     }
 }
 
