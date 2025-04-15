@@ -70,13 +70,49 @@ class ProductViewModel: ObservableObject {
         defer { isLoading = false }
         
         do {
-            products = try await productService.fetchProducts(
+            var fetchedProducts = try await productService.fetchProducts(
                 category: selectedCategory,
                 country: selectedCountry,
                 sortBy: sortOption
             )
-            print("Successfully fetched \(products.count) products")
-            error = nil
+            print("Successfully fetched \(fetchedProducts.count) products")
+            print(fetchedProducts)
+            // Filter out products with nil IDs and process them
+            fetchedProducts = fetchedProducts.filter { product in
+                guard product.id != nil else {
+                    print("Warning: Product found with nil ID - skipping")
+                    return false
+                }
+                return true
+            }
+            print("after filtering fetched \(fetchedProducts.count) products")
+
+            
+            // Sort products if needed
+            switch sortOption {
+            case .recent:
+                // Products already sorted by the query
+                break
+            case .priceHighToLow:
+                fetchedProducts.sort { 
+                    (($0.lowestListingPrice ?? 0) > ($1.lowestListingPrice ?? 0)) 
+                }
+            case .priceLowToHigh:
+                fetchedProducts.sort { 
+                    (($0.lowestListingPrice ?? Double.infinity) < ($1.lowestListingPrice ?? Double.infinity)) 
+                }
+            case .mostViewed:
+                fetchedProducts.sort { $0.viewCount > $1.viewCount }
+            case .mostFavorited:
+                fetchedProducts.sort { $0.favoriteCount > $1.favoriteCount }
+            }
+            
+            // Assign products on the main thread
+            DispatchQueue.main.async {
+                self.products = fetchedProducts
+                print("Successfully fetched \(self.products.count) products")
+                self.error = nil
+            }
         } catch {
             print("Error fetching products: \(error)")
             self.error = error

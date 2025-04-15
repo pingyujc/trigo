@@ -5,93 +5,261 @@ struct CreateListingView: View {
     @EnvironmentObject var productViewModel: ProductViewModel
     
     // Form fields
-    @State private var selectedProductId: String
+    @State private var selectedProductId: String = ""
     @State private var price = ""
     @State private var notes = ""
     @State private var isLoading = true
     @State private var errorMessage: String?
     @State private var showError = false
     
-    // Add optional parameter for pre-selected product
-    let preSelectedProductId: String?
+    // Store the pre-selected product id
+    private let preSelectedProductId: String?
     
     init(preSelectedProductId: String? = nil) {
         self.preSelectedProductId = preSelectedProductId
-        _selectedProductId = State(initialValue: preSelectedProductId ?? "")
     }
     
     var body: some View {
-        NavigationView {
-            Group {
+        ScrollView {
+            VStack(spacing: 0) {
+                headerView
+                
                 if isLoading {
-                    VStack {
-                        ProgressView("Loading products...")
-                        if let error = productViewModel.error {
-                            Text(error.localizedDescription)
-                                .foregroundColor(.red)
-                                .padding()
-                        }
-                    }
+                    loadingView
                 } else {
-                    Form {
-                        Section(header: Text("Select Product")) {
-                            if productViewModel.products.isEmpty {
-                                Text("No products available")
-                                    .foregroundColor(.secondary)
-                            } else {
-                                Picker("Select a Product", selection: $selectedProductId) {
-                                    Text("Select a product").tag("")
-                                    ForEach(productViewModel.products) { product in
-                                        if let id = product.id {
-                                            Text(product.title).tag(id)
-                                        }
-                                    }
+                    formFieldsView
+                }
+            }
+            .background(Color.white)
+        }
+        .navigationBarHidden(true)
+        .task {
+            await loadProducts()
+        }
+        .onAppear {
+            // Set the pre-selected product ID here after view is created
+            if let productId = preSelectedProductId {
+                selectedProductId = productId
+            }
+        }
+        .alert("Error", isPresented: $showError) {
+            Button("OK") {
+                errorMessage = nil
+            }
+        } message: {
+            if let errorMessage = errorMessage {
+                Text(errorMessage)
+            }
+        }
+    }
+    
+    // MARK: - View Components
+    
+    private var headerView: some View {
+        VStack(spacing: 8) {
+            Text("CREATE LISTING")
+                .font(.system(size: 28, weight: .bold))
+                .tracking(2)
+                .frame(maxWidth: .infinity, alignment: .center)
+        }
+        .padding(.top, 16)
+        .padding(.bottom, 32)
+    }
+    
+    private var loadingView: some View {
+        VStack(spacing: 16) {
+            ProgressView()
+                .scaleEffect(1.5)
+                .padding(.top, 40)
+            
+            Text("Loading products...")
+                .font(.system(size: 16))
+                .foregroundColor(.gray)
+            
+            if let error = productViewModel.error {
+                Text(error.localizedDescription)
+                    .font(.system(size: 14))
+                    .foregroundColor(.secondaryAccent)
+                    .padding(.top, 16)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 32)
+            }
+        }
+        .padding(.top, 60)
+    }
+    
+    private var formFieldsView: some View {
+        VStack(spacing: 24) {
+            // Product Selection
+            productSelectionField
+            
+            // Price field
+            priceField
+            
+            // Notes field
+            notesField
+            
+            // Action Buttons
+            postButton
+            cancelButton
+        }
+        .padding(.horizontal, 20)
+    }
+    
+    private var productSelectionField: some View {
+        formField(
+            title: "SELECT PRODUCT",
+            content: {
+                if productViewModel.products.isEmpty {
+                    Text("No products available")
+                        .font(.system(size: 16))
+                        .foregroundColor(.gray)
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(Color.customBackgroundSecondary)
+                        .cornerRadius(8)
+                } else {
+                    Menu {
+                        ForEach(productViewModel.products) { product in
+                            if let id = product.id {
+                                Button {
+                                    selectedProductId = id
+                                } label: {
+                                    Text(product.title)
                                 }
-                                .pickerStyle(MenuPickerStyle())
+                            } else {
+                                // Fallback for products without ID
+                                Text("Product missing ID")
+                                    .foregroundColor(.gray)
+                                    .disabled(true)
                             }
                         }
                         
-                        // Price
-                        Section(header: Text("Price")) {
-                            TextField("Enter price", text: $price)
-                                .keyboardType(.decimalPad)
+                        // Ensure we always have at least one item
+                        if productViewModel.products.allSatisfy({ $0.id == nil }) {
+                            Text("No valid products")
+                                .foregroundColor(.gray)
+                                .disabled(true)
                         }
-                        
-                        // Notes
-                        Section(header: Text("Notes (optional)")) {
-                            TextEditor(text: $notes)
-                                .frame(height: 100)
+                    } label: {
+                        HStack {
+                            if selectedProductId.isEmpty {
+                                Text("Select a product")
+                                    .font(.system(size: 16))
+                                    .foregroundColor(.gray)
+                            } else if let product = productViewModel.products.first(where: { $0.id == selectedProductId }) {
+                                Text(product.title)
+                                    .font(.system(size: 16))
+                                    .foregroundColor(.black)
+                            } else {
+                                Text("Select a product")
+                                    .font(.system(size: 16))
+                                    .foregroundColor(.gray)
+                            }
+                            
+                            Spacer()
+                            
+                            Image(systemName: "chevron.down")
+                                .foregroundColor(.gray)
                         }
+                        .padding()
+                        .background(Color.customBackgroundSecondary)
+                        .cornerRadius(8)
                     }
                 }
             }
-            .navigationTitle("Create Listing")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        dismiss()
+        )
+    }
+    
+    private var priceField: some View {
+        formField(
+            title: "PRICE",
+            content: {
+                HStack {
+                    Text("$")
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundColor(.black)
+                    
+                    TextField("Enter price", text: $price)
+                        .font(.system(size: 16))
+                        .keyboardType(.decimalPad)
+                }
+                .padding()
+                .background(Color.customBackgroundSecondary)
+                .cornerRadius(8)
+            }
+        )
+    }
+    
+    private var notesField: some View {
+        formField(
+            title: "NOTES (OPTIONAL)",
+            content: {
+                ZStack(alignment: .topLeading) {
+                    TextEditor(text: $notes)
+                        .font(.system(size: 16))
+                        .frame(height: 120)
+                        .padding(4)
+                        .background(Color.customBackgroundSecondary)
+                        .cornerRadius(8)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                        )
+                    
+                    if notes.isEmpty {
+                        Text("Add any details about condition, shipping, etc...")
+                            .font(.system(size: 16))
+                            .foregroundColor(.gray)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 16)
+                            .allowsHitTesting(false)
                     }
                 }
-                
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Post") {
-                        createListing()
-                    }
-                    .disabled(!isValid || isLoading)
-                }
             }
-            .task {
-                await loadProducts()
-            }
-            .alert("Error", isPresented: $showError) {
-                Button("OK") {
-                    errorMessage = nil
-                }
-            } message: {
-                if let errorMessage = errorMessage {
-                    Text(errorMessage)
-                }
-            }
+        )
+    }
+    
+    private var postButton: some View {
+        Button(action: createListing) {
+            Text("Post Listing")
+                .font(.system(size: 16, weight: .bold))
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 16)
+                .background(isValid ? Color.black : Color.gray)
+                .cornerRadius(30)
+        }
+        .disabled(!isValid)
+        .padding(.top, 16)
+    }
+    
+    private var cancelButton: some View {
+        Button(action: {
+            dismiss()
+        }) {
+            Text("Cancel")
+                .font(.system(size: 16, weight: .medium))
+                .foregroundColor(.black)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 16)
+                .background(Color.white)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 30)
+                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                )
+        }
+        .padding(.bottom, 40)
+    }
+    
+    @ViewBuilder
+    private func formField<Content: View>(title: String, @ViewBuilder content: @escaping () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title)
+                .font(.system(size: 14, weight: .medium))
+                .foregroundColor(.gray)
+            
+            content()
         }
     }
     
@@ -112,8 +280,6 @@ struct CreateListingView: View {
         
         // Now verify the preselected product
         if let productId = preSelectedProductId {
-            print("Checking product ID:", productId)
-            print("Available products:", productViewModel.products.map { $0.id })
             let productExists = productViewModel.products.contains { $0.id == productId }
             if !productExists {
                 selectedProductId = ""

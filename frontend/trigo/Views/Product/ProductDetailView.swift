@@ -12,6 +12,7 @@ struct ProductDetailView: View {
     @StateObject private var viewModel: ProductDetailViewModel
     @EnvironmentObject private var productViewModel: ProductViewModel
     @State private var viewMode: ViewMode = .buy
+    @State private var selectedImageIndex: Int = 0
     
     enum ViewMode {
         case buy, sell
@@ -31,17 +32,61 @@ struct ProductDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                // Product Header - full width image
-                Image(viewModel.product.image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
+                // Product Header - full width image with optional gallery
+                if !viewModel.product.imageUrls.isEmpty {
+                    // If we have images, show them with paging
+                    TabView(selection: $selectedImageIndex) {
+                        ForEach(0..<viewModel.product.imageUrls.count, id: \.self) { index in
+                            if let url = URL(string: viewModel.product.imageUrls[index]) {
+                                CachedAsyncImage(url: url) { image in
+                                    image
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(height: 350)
+                                        .clipped()
+                                } placeholder: {
+                                    Rectangle()
+                                        .fill(Color.customBackgroundSecondary)
+                                        .frame(height: 350)
+                                        .overlay(
+                                            ProgressView()
+                                                .scaleEffect(1.5)
+                                        )
+                                }
+                                .tag(index)
+                            }
+                        }
+                    }
+                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
                     .frame(height: 350)
-                    .clipped()
+                    
+                    // Image counter if we have multiple images
+                    if viewModel.product.imageUrls.count > 1 {
+                        HStack {
+                            ForEach(0..<viewModel.product.imageUrls.count, id: \.self) { index in
+                                Circle()
+                                    .fill(selectedImageIndex == index ? Color.black : Color.gray.opacity(0.3))
+                                    .frame(width: 8, height: 8)
+                            }
+                        }
+                        .padding(.top, 8)
+                    }
+                } else {
+                    // Fallback for no images
+                    Rectangle()
+                        .fill(Color.customBackgroundSecondary)
+                        .frame(height: 350)
+                        .overlay(
+                            Image(systemName: "photo")
+                                .font(.system(size: 60))
+                                .foregroundColor(.gray)
+                        )
+                }
                 
                 // Product Info
                 VStack(alignment: .leading, spacing: 24) {
-                    // Year/season marker
-                    Text("2025")
+                    // Category as a tag
+                    Text(viewModel.product.category.rawValue.capitalized)
                         .font(.system(size: 14, weight: .medium))
                         .foregroundColor(.gray)
                         .padding(.top, 16)

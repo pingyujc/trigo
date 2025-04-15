@@ -12,6 +12,16 @@ struct SectionView: View {
     let title: String
     let products: [Product]
     
+    // Get only unique products based on ID
+    private var uniqueProducts: [Product] {
+        var uniqueIds = Set<String>()
+        return products.filter { product in
+            guard let id = product.id else { return false }
+            let isNew = uniqueIds.insert(id).inserted
+            return isNew
+        }
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             // Section title with horizontal lines on each side
@@ -32,17 +42,24 @@ struct SectionView: View {
             .padding(.top, 8)
             .padding(.bottom, 16)
             
-            // Product cards in horizontal scroll
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 16) {
-                    ForEach(products) { product in
-                        NavigationLink(destination: ProductDetailView(viewModel: ProductDetailViewModel(product: product))) {
-                            ProductCard(product: product)
+            // Product cards in horizontal scroll with unique products
+            if uniqueProducts.isEmpty {
+                Text("No products available")
+                    .foregroundColor(.gray)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.vertical, 20)
+            } else {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 16) {
+                        ForEach(uniqueProducts) { product in
+                            NavigationLink(destination: ProductDetailView(viewModel: ProductDetailViewModel(product: product))) {
+                                ProductCard(product: product)
+                            }
+                            .buttonStyle(PlainButtonStyle())
                         }
-                        .buttonStyle(PlainButtonStyle())
                     }
+                    .padding(.horizontal)
                 }
-                .padding(.horizontal)
             }
         }
     }

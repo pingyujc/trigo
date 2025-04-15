@@ -88,18 +88,43 @@ struct HomeView: View {
     // Featured Product View - like the Prada sunglasses in reference
     private var featuredProductView: some View {
         ZStack(alignment: .bottomLeading) {
-            // Use a placeholder image or first product image
-            if let featuredProduct = viewModel.products.first {
-                Image(featuredProduct.image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: 400)
-                    .clipped()
-            } else {
-                Rectangle()
-                    .fill(Color.gray.opacity(0.2))
-                    .frame(height: 400)
+            // Fixed height container to prevent layout shifts
+            GeometryReader { geometry in
+                if let featuredProduct = viewModel.products.first {
+                    if let firstImageUrl = featuredProduct.imageUrls.first, let url = URL(string: firstImageUrl) {
+                        CachedAsyncImage(url: url) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: geometry.size.width, height: 400)
+                                .clipped()
+                        } placeholder: {
+                            Rectangle()
+                                .fill(Color.customBackgroundSecondary)
+                                .frame(width: geometry.size.width, height: 400)
+                                .overlay(
+                                    ProgressView()
+                                        .scaleEffect(1.5)
+                                )
+                        }
+                    } else {
+                        // No image URLs
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.2))
+                            .frame(width: geometry.size.width, height: 400)
+                            .overlay(
+                                Image(systemName: "photo")
+                                    .font(.system(size: 40))
+                                    .foregroundColor(.gray)
+                            )
+                    }
+                } else {
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.2))
+                        .frame(width: geometry.size.width, height: 400)
+                }
             }
+            .frame(height: 400)
             
             // Product info overlay
             VStack(alignment: .leading, spacing: 4) {
@@ -135,6 +160,7 @@ struct HomeView: View {
             )
             .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .frame(height: 400)
         .padding(.bottom, 32)
     }
     

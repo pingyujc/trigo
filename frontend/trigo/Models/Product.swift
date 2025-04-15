@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseFirestore
+
 // identifiable makes it able to use ID
 // codable is for fireBase and api in the future
 
@@ -21,27 +22,27 @@ struct Product: Identifiable, Codable {
     var description: String
     var category: Category
     var country: Country
-    var image: String
-    
+    var imageUrls: [String]  // storing multiple images ulrs
+
     // Statistics
     var viewCount: Int
     var favoriteCount: Int
     var lowestListingPrice: Double?
     var highestRequestPrice: Double?
-    
+
     // Market Data
     var listings: [Listing]
     var requests: [Request]
-    
+
     // Computed properties for local use
     var currentLowestListingPrice: Double? {
         listings.filter { $0.isActive }.min { $0.price < $1.price }?.price
     }
-    
+
     var currentHighestRequestPrice: Double? {
         requests.filter { $0.isActive }.max { $0.maxBudget < $1.maxBudget }?.maxBudget
     }
-    
+
     // Regular init
     init(
         id: String? = nil,
@@ -49,7 +50,7 @@ struct Product: Identifiable, Codable {
         description: String,
         category: Category,
         country: Country,
-        image: String,
+        imageUrls: [String] = [],  // Updated parameter
         viewCount: Int = 0,
         favoriteCount: Int = 0,
         lowestListingPrice: Double? = nil,
@@ -62,7 +63,7 @@ struct Product: Identifiable, Codable {
         self.description = description
         self.category = category
         self.country = country
-        self.image = image
+        self.imageUrls = imageUrls
         self.viewCount = viewCount
         self.favoriteCount = favoriteCount
         self.lowestListingPrice = lowestListingPrice
@@ -79,7 +80,7 @@ struct Listing: Identifiable, Codable {
     let price: Double
     let createdAt: Date
     var isActive: Bool
-    
+
     // Additional details
     var notes: String?
 }
@@ -91,7 +92,7 @@ struct Request: Identifiable, Codable {
     let maxBudget: Double
     let createdAt: Date
     var isActive: Bool
-    
+
     // Additional details
     var notes: String?
 }
@@ -105,7 +106,7 @@ extension Product {
             description: "This is a sample product description",
             category: .electronics,
             country: .japan,
-            image: "sample-image",
+            imageUrls: [],
             viewCount: 100,
             favoriteCount: 50,
             lowestListingPrice: nil,
@@ -122,7 +123,7 @@ extension Product {
             description: "Seeking a vintage Polaroid camera in good condition",
             category: .electronics,
             country: .unitedStates,
-            image: "camera-image",
+            imageUrls: [],
             viewCount: 50,
             favoriteCount: 10,
             lowestListingPrice: nil,
@@ -142,3 +143,4 @@ extension Product {
         )
     }
 }
+

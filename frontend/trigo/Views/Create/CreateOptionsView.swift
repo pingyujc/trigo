@@ -35,36 +35,64 @@ struct CreateOptionsView: View {
     
     var body: some View {
         NavigationView {
-            List(CreateOption.allCases, id: \.self) { option in
-                NavigationLink(
-                    destination: destinationView(for: option)
-                ) {
-                    HStack {
-                        Image(systemName: option.icon)
-                            .foregroundColor(.blue)
-                            .frame(width: 30)
-                        
-                        VStack(alignment: .leading) {
-                            Text(option.rawValue)
-                                .font(.headline)
-                            Text(option.description)
-                                .font(.caption)
-                                .foregroundColor(.gray)
+            ScrollView {
+                VStack(spacing: 0) {
+                    // Header
+                    Text("CREATE")
+                        .font(.system(size: 28, weight: .bold))
+                        .tracking(2)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.top, 16)
+                        .padding(.bottom, 32)
+                    
+                    // Create Options
+                    VStack(spacing: 20) {
+                        ForEach(CreateOption.allCases, id: \.self) { option in
+                            createOptionCard(option: option)
                         }
                     }
-                    .padding(.vertical, 8)
+                    .padding(.horizontal, 20)
                 }
-            }
-            .navigationTitle("Create New")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                }
+                .background(Color.white)
             }
         }
         .environmentObject(productViewModel)
+    }
+    
+    @ViewBuilder
+    private func createOptionCard(option: CreateOption) -> some View {
+        NavigationLink(destination: destinationView(for: option)) {
+            HStack(spacing: 16) {
+                // Icon
+                Image(systemName: option.icon)
+                    .font(.system(size: 24))
+                    .foregroundColor(.black)
+                    .frame(width: 40, height: 40)
+                
+                // Option text
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(option.rawValue)
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundColor(.black)
+                    
+                    Text(option.description)
+                        .font(.system(size: 14))
+                        .foregroundColor(.gray)
+                        .lineLimit(2)
+                }
+                
+                Spacer()
+                
+                // Chevron
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 14))
+                    .foregroundColor(.gray)
+            }
+            .padding(20)
+            .background(Color.customBackgroundSecondary)
+            .cornerRadius(12)
+        }
+        .buttonStyle(PlainButtonStyle())
     }
     
     @ViewBuilder
