@@ -56,14 +56,10 @@ struct PreferencesView: View {
     }
 }
 
-struct OrderListView: View {
-    let orders: [Order]
-    
+struct ActiveOrdersView: View {
     var body: some View {
-        List(orders) { order in
-            Text("Order #\(order.id)")
-        }
-        .navigationTitle("Active Orders")
+        Text("Active Orders")
+            .navigationTitle("Active Orders")
     }
 }
 

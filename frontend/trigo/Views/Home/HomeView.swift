@@ -20,7 +20,7 @@ struct HomeView: View {
         NavigationView {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 0) {
-                    // Featured Product - similar to Prada sunglasses in reference
+                    // Featured Product
                     featuredProductView
                     
                     // Content Sections

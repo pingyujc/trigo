@@ -167,15 +167,18 @@ struct SignUpView: View {
         }
         
         isLoading = true
+        errorMessage = ""
+        
         Task {
             do {
                 _ = try await authService.signUp(email: email, password: password, name: name, username: username)
-                
+                // AuthService automatically updates isAuthenticated - no need for manual updates
+                isLoading = false
                 dismiss()
             } catch {
                 errorMessage = error.localizedDescription
+                isLoading = false
             }
-            isLoading = false
         }
     }
 }

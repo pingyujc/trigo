@@ -1,11 +1,11 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @StateObject private var viewModel = ProfileViewModel()
+    @StateObject private var authService = AuthService.shared
     
     var body: some View {
         NavigationView {
-            if viewModel.isLoggedIn {
+            if authService.isAuthenticated {
                 ScrollView {
                     VStack(spacing: 0) {
                         // Header
@@ -17,9 +17,11 @@ struct ProfileView: View {
                             .padding(.bottom, 24)
                         
                         // Profile Header
-                        ProfileHeader(user: viewModel.user)
-                            .padding(.horizontal)
-                            .padding(.bottom, 32)
+                        if let user = authService.currentUser {
+                            ProfileHeader(user: user)
+                                .padding(.horizontal)
+                                .padding(.bottom, 32)
+                        }
                         
                         // Profile Sections
                         VStack(spacing: 24) {
@@ -30,7 +32,7 @@ struct ProfileView: View {
                             ])
                             
                             profileSection(title: "Orders", items: [
-                                ProfileMenuItem(title: "Active Orders (\(viewModel.activeOrders.count))", icon: "clock"),
+                                ProfileMenuItem(title: "Active Orders", icon: "clock"),
                                 ProfileMenuItem(title: "Order History", icon: "clock.arrow.circlepath")
                             ])
                             
@@ -41,14 +43,12 @@ struct ProfileView: View {
                             ])
                             
                             // Sign Out Button
-                            Button(action: {
-                                viewModel.signOut()
-                            }) {
+                            Button(action: signOut) {
                                 Text("Sign Out")
                                     .font(.system(size: 16, weight: .bold))
-                                    .foregroundColor(.white)
                                     .frame(maxWidth: .infinity)
                                     .padding(.vertical, 16)
+                                    .foregroundColor(.white)
                                     .background(Color.black)
                                     .cornerRadius(30)
                             }
@@ -62,6 +62,25 @@ struct ProfileView: View {
             } else {
                 LoginPromptView(destination: .profile)
             }
+        }
+        .onAppear {
+            // Debug logging
+            print("ProfileView appeared - isAuthenticated: \(authService.isAuthenticated)")
+            print("ProfileView appeared - currentUser: \(String(describing: authService.currentUser?.name))")
+        }
+        .onChange(of: authService.isAuthenticated) { isAuth in
+            print("ProfileView - isAuthenticated changed to: \(isAuth)")
+        }
+
+    }
+    
+    private func signOut() {
+        do {
+            try authService.signOut()
+            print("ProfileView - Sign out successful")
+            // AuthService automatically updates isAuthenticated - no need for manual updates
+        } catch {
+            print("ProfileView - Sign out error: \(error.localizedDescription)")
         }
     }
     
@@ -114,8 +133,8 @@ struct ProfileView: View {
             PaymentMethodsView()
         case "Preferences":
             PreferencesView()
-        case "Active Orders (\(viewModel.activeOrders.count))":
-            OrderListView(orders: viewModel.activeOrders)
+        case "Active Orders":
+            ActiveOrdersView()
         case "Order History":
             OrderHistoryView()
         case "Listed Items":
@@ -141,3 +160,4 @@ struct ProfileView_Previews: PreviewProvider {
         ProfileView()
     }
 } 
+

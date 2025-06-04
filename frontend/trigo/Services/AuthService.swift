@@ -24,6 +24,7 @@ enum AuthError: LocalizedError {
     }
 }
 
+@MainActor
 class AuthService: ObservableObject {
     static let shared = AuthService()
     private let db = Firestore.firestore()
@@ -34,9 +35,15 @@ class AuthService: ObservableObject {
     private init() {
         // Set up auth state listener
         Auth.auth().addStateDidChangeListener { [weak self] _, user in
-            Task {
+            Task { @MainActor in
                 if let user = user {
-                    try await self?.fetchUser(userId: user.uid)
+                    do {
+                        try await self?.fetchUserAndUpdate(userId: user.uid)
+                    } catch {
+                        print("Error fetching user: \(error)")
+                        self?.currentUser = nil
+                        self?.isAuthenticated = false
+                    }
                 } else {
                     self?.currentUser = nil
                     self?.isAuthenticated = false
@@ -78,8 +85,13 @@ class AuthService: ObservableObject {
         
         // Create or fetch user
         let user = try await createOrFetchUser(from: authResult.user)
-        self.currentUser = user
-        self.isAuthenticated = true
+        
+        // Update on main thread
+        await MainActor.run {
+            self.currentUser = user
+            self.isAuthenticated = true
+        }
+        
         return user
     }
     
@@ -95,26 +107,44 @@ class AuthService: ObservableObject {
         )
         
         try await createUser(user)
-        self.currentUser = user
-        self.isAuthenticated = true
+        
+        // Update on main thread
+        await MainActor.run {
+            self.currentUser = user
+            self.isAuthenticated = true
+        }
+        
         return user
     }
     
     func signIn(email: String, password: String) async throws -> User {
         let authResult = try await Auth.auth().signIn(withEmail: email, password: password)
         let user = try await fetchUser(userId: authResult.user.uid)
-        self.currentUser = user
-        self.isAuthenticated = true
+        
+        // Update on main thread
+        await MainActor.run {
+            self.currentUser = user
+            self.isAuthenticated = true
+        }
+        
         return user
     }
     
     func signOut() throws {
         try Auth.auth().signOut()
+        // These updates are already on main thread since function is @MainActor
         self.currentUser = nil
         self.isAuthenticated = false
     }
     
     // MARK: - Helper Methods
+    private func fetchUserAndUpdate(userId: String) async throws {
+        let user = try await fetchUser(userId: userId)
+        // Update on main thread
+        self.currentUser = user
+        self.isAuthenticated = true
+    }
+    
     private func createOrFetchUser(from firebaseUser: FirebaseAuth.User) async throws -> User {
         // Try to fetch existing user
         do {

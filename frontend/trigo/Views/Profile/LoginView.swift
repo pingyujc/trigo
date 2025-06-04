@@ -146,28 +146,44 @@ struct LoginView: View {
         }
 
         isLoading = true
+        errorMessage = ""
+        
         Task {
             do {
-                _ = try await authService.signIn(email: email, password: password)
+                print("LoginView - Starting email sign in")
+                let user = try await authService.signIn(email: email, password: password)
+                print("LoginView - Email sign in successful: \(user.name)")
+                print("LoginView - AuthService isAuthenticated: \(authService.isAuthenticated)")
+                // AuthService automatically updates isAuthenticated - no need for manual updates
+                isLoading = false
                 dismiss()
             } catch {
+                print("LoginView - Email sign in error: \(error.localizedDescription)")
                 errorMessage = error.localizedDescription
+                isLoading = false
             }
-            isLoading = false
         }
     }
 
     func googleLogin() {
         isLoading = true
+        errorMessage = ""
+        
+        // call the google sign in function from the auth service
         Task {
             do {
+                print("LoginView - Starting Google sign in")
                 let user = try await authService.signInWithGoogle()
-                print("Signed in with Google, userID: \(user.username)")
+                print("LoginView - Google sign in successful: \(user.username)")
+                print("LoginView - AuthService isAuthenticated: \(authService.isAuthenticated)")
+                // AuthService automatically updates isAuthenticated - no need for manual updates
+                isLoading = false
                 dismiss()
             } catch {
+                print("LoginView - Google sign in error: \(error.localizedDescription)")
                 errorMessage = error.localizedDescription
+                isLoading = false
             }
-            isLoading = false
         }
     }
 }
